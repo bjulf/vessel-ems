@@ -1,0 +1,18 @@
+# Julia
+Manifest.toml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Output artifacts
+plots/
+dispatch_results.csv
+
+# IDE / OS
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store
