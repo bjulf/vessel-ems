@@ -16,3 +16,6 @@ dispatch_results.csv
 *.swp
 Thumbs.db
 .DS_Store
+
+/.quarto/
+**/*.quarto_ipynb

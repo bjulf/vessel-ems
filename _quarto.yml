@@ -1,0 +1,5 @@
+project:
+  type: default
+
+execute:
+  python: ".venv/Scripts/python.exe"
