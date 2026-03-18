@@ -2351,7 +2351,7 @@ window.Quarto = {
 
 <section id="run-metadata" class="level2">
 <h2 class="anchored" data-anchor-id="run-metadata">Run metadata</h2>
-<div id="421e3586" class="cell" data-execution_count="2">
+<div id="6c99c87c" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display cell-output-markdown">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -2361,7 +2361,7 @@ window.Quarto = {
 <tbody>
 <tr class="odd">
 <td><strong>Label</strong></td>
-<td><code>LoadProfile_v2</code></td>
+<td><code>Initial run with early battery and generator model</code></td>
 </tr>
 <tr class="even">
 <td><strong>Date</strong></td>
@@ -2371,24 +2371,14 @@ window.Quarto = {
 <td><strong>Description</strong></td>
 <td>4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW.</td>
 </tr>
-<tr class="even">
-<td><strong>Git hash</strong></td>
-<td><code>a226f57a81a5e76cd650311d2f528c7ab205249d</code></td>
-</tr>
-<tr class="odd">
-<td><strong>Solver status</strong></td>
-<td>OPTIMAL</td>
-</tr>
-<tr class="even">
-<td><strong>Objective (g fuel)</strong></td>
-<td>6,164,869.1</td>
-</tr>
-<tr class="odd">
-<td><strong>Solve time</strong></td>
-<td>1.38 s</td>
-</tr>
 </tbody>
 </table>
+<pre><code>Battery model includes: SOC constraints, charge/discharge power limits, efficiency losses. Generator model includes
+ piecewise linear fuel consumption, with SOS2 constraints, min/max power limits symmetry-breaking constraints. |</code></pre>
+<div class="line-block"><strong>Git hash</strong> | <code>902dbda5ed03647f452fa65042e55596a783eeeb</code> |<br>
+<strong>Solver status</strong> | OPTIMAL |<br>
+<strong>Objective (g fuel)</strong> | 6,164,869.1 |<br>
+<strong>Solve time</strong> | 1.17 s |</div>
 </div>
 </div>
 </section>
@@ -2482,7 +2472,7 @@ s_t \geq \text{SOC}^{ref} - \tfrac{E_t}{E^{max}}
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <section id="battery" class="level3">
 <h3 class="anchored" data-anchor-id="battery">Battery</h3>
-<div id="34adeb09" class="cell" data-execution_count="3">
+<div id="9db9eb37" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <table class="dataframe table table-sm table-striped small">
 
@@ -2644,7 +2634,7 @@ SOC penalty weight <span class="math inline">\(\\lambda_{soc}\)</span>
 </section>
 <section id="generators" class="level3">
 <h3 class="anchored" data-anchor-id="generators">Generators</h3>
-<div id="201b9e68" class="cell" data-execution_count="4">
+<div id="dabeb0db" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <table class="dataframe table table-sm table-striped small">
 
@@ -2735,7 +2725,7 @@ SFOC [g/kWh]
 </section>
 <section id="results-summary" class="level2">
 <h2 class="anchored" data-anchor-id="results-summary">Results summary</h2>
-<div id="082993f8" class="cell" data-execution_count="5">
+<div id="978e1da3" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <table class="dataframe table table-sm table-striped small">
 
@@ -2921,7 +2911,7 @@ Gen 2 stops
 </section>
 <section id="figures" class="level2">
 <h2 class="anchored" data-anchor-id="figures">Figures</h2>
-<div id="fe4c543a" class="cell" data-execution_count="6">
+<div id="748901ae" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2937,7 +2927,7 @@ Gen 2 stops
 </div>
 </div>
 </div>
-<div id="31f7a053" class="cell" data-execution_count="7">
+<div id="73ce524c" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <pre><code>&lt;Figure size 672x480 with 0 Axes&gt;</code></pre>
 </div>
