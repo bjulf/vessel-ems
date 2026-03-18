@@ -98,9 +98,9 @@ function main()
         240.0, 190.0,  80.0,  50.0,  40.0,  35.0,   # 01-06 arrival, engines shutting down
          30.0,  45.0,  60.0,  75.0,  85.0,  90.0,   # 07-12 hotel load at berth
          95.0,  90.0,  85.0,  80.0,  70.0,  60.0,   # 13-18 port stay
-         55.0,  50.0,  45.0, 130.0, 210.0, 310.0,   # 19-24 departure prep and manoeuvring
+         55.0,  50.0,  45.0, 550.0, 50.0, 60.0,   # 19-24 departure prep and manoeuvring
         # Day 3 – at sea, high activity (peak load day)
-        295.0, 275.0, 265.0, 258.0, 265.0, 285.0,   # 01-06 night transit
+        40.0, 275.0, 265.0, 258.0, 265.0, 285.0,   # 01-06 night transit
         360.0, 445.0, 545.0, 620.0, 675.0, 698.0,   # 07-12 morning ramp-up
         700.0, 685.0, 670.0, 650.0, 625.0, 590.0,   # 13-18 peak transit load
         550.0, 505.0, 465.0, 425.0, 375.0, 320.0,   # 19-24 evening
