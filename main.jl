@@ -60,8 +60,8 @@ function main()
     # ── Run identity ───────────────────────────────────────────────────────────
     # Set run_label before each run — it becomes part of the folder name.
     # Fill run_desc with a short note about what you're testing (optional).
-    run_label = "Test"
-    run_desc  = "Initial test run of quarto report setup with 2 gensets and 4-day load profile."
+    run_label = "LoadProfile_v2"
+    run_desc  = "4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW."
 
     git_hash  = strip(read(`git rev-parse HEAD`, String))
     git_dirty = !success(`git diff --quiet HEAD`)
@@ -75,8 +75,8 @@ function main()
         E_max     = 940.0,    # kWh  total battery capacity
         SOC_min   = 0.2,      #      minimum state of charge
         SOC_max   = 0.9,      #      maximum state of charge
-        P_ch_max  = 100.0,    # kW   max charging power
-        P_dis_max = 100.0,    # kW   max discharging power
+        P_ch_max  = 753.25,   # kW  nominal max charging power (655V*1150A)
+        P_dis_max = 943.2,    # kW   mominal discharging power (655V*1440A)
         eta_ch    = 0.95,     #      charging efficiency
         eta_dis   = 0.95,     #      discharging efficiency
         E_init    = 0.5*940,  # kWh  initial stored energy (50% SOC)
@@ -86,29 +86,31 @@ function main()
     )
 
     # Load profile over 100-hour time horizon (~4 days), values in kW
+    # Includes at-sea high-load periods (up to 700 kW), normal transit, and
+    # low-demand stretches (0–100 kW) representing port/anchorage or hotel load.
     load = [
-        # Day 1 – hours 1-24
-        280.0, 260.0, 250.0, 245.0, 250.0, 270.0,   # 01-06 night/early morning
-        320.0, 390.0, 470.0, 530.0, 580.0, 610.0,   # 07-12 morning ramp-up
-        620.0, 600.0, 590.0, 570.0, 560.0, 530.0,   # 13-18 afternoon
-        500.0, 460.0, 430.0, 400.0, 360.0, 70.0,   # 19-24 evening wind-down
-        # Day 2 – hours 25-48
-        60.0, 50.0, 150.0, 150.0, 150.0, 170.0,   # 01-06
-        315.0, 385.0, 465.0, 525.0, 575.0, 605.0,   # 07-12
-        615.0, 595.0, 585.0, 565.0, 555.0, 525.0,   # 13-18
-        495.0, 455.0, 425.0, 395.0, 355.0, 305.0,   # 19-24
-        # Day 3 – hours 49-72  (higher load, e.g. increased activity)
-        290.0, 270.0, 260.0, 255.0, 262.0, 280.0,   # 01-06
-        340.0, 410.0, 490.0, 550.0, 600.0, 630.0,   # 07-12
-        640.0, 625.0, 610.0, 595.0, 580.0, 550.0,   # 13-18
-        515.0, 475.0, 445.0, 415.0, 375.0, 325.0,   # 19-24
-        # Day 4 – hours 73-96  (tapering back down)
-        270.0, 252.0, 244.0, 240.0, 246.0, 262.0,   # 01-06
-        308.0, 375.0, 452.0, 512.0, 558.0, 588.0,   # 07-12
-        595.0, 578.0, 568.0, 550.0, 540.0, 512.0,   # 13-18
-        482.0, 445.0, 415.0, 385.0, 348.0, 298.0,   # 19-24
-        # Hours 97-100 (start of day 5)
-        268.0, 250.0, 242.0, 238.0,
+        # Day 1 – at sea, moderate-to-high load
+        280.0, 260.0, 250.0, 245.0, 250.0, 270.0,   # 01-06 night transit
+        340.0, 430.0, 530.0, 610.0, 670.0, 695.0,   # 07-12 morning ramp-up (peak ~700 kW)
+        700.0, 680.0, 660.0, 635.0, 610.0, 570.0,   # 13-18 afternoon high load
+        530.0, 480.0, 440.0, 390.0, 340.0, 290.0,   # 19-24 evening wind-down
+        # Day 2 – arrival and port stay (very low load)
+        240.0, 190.0,  80.0,  50.0,  40.0,  35.0,   # 01-06 arrival, engines shutting down
+         30.0,  45.0,  60.0,  75.0,  85.0,  90.0,   # 07-12 hotel load at berth
+         95.0,  90.0,  85.0,  80.0,  70.0,  60.0,   # 13-18 port stay
+         55.0,  50.0,  45.0, 130.0, 210.0, 310.0,   # 19-24 departure prep and manoeuvring
+        # Day 3 – at sea, high activity (peak load day)
+        295.0, 275.0, 265.0, 258.0, 265.0, 285.0,   # 01-06 night transit
+        360.0, 445.0, 545.0, 620.0, 675.0, 698.0,   # 07-12 morning ramp-up
+        700.0, 685.0, 670.0, 650.0, 625.0, 590.0,   # 13-18 peak transit load
+        550.0, 505.0, 465.0, 425.0, 375.0, 320.0,   # 19-24 evening
+        # Day 4 – mixed: morning transit, afternoon anchorage
+        275.0, 255.0, 246.0, 242.0, 248.0, 265.0,   # 01-06 night transit
+        315.0, 400.0, 490.0, 570.0, 620.0, 645.0,   # 07-12 morning
+        580.0, 480.0, 350.0,  95.0,  65.0,  50.0,   # 13-18 anchor at 15:00 (load drops)
+         45.0,  40.0,  38.0,  42.0,  55.0,  75.0,   # 19-24 overnight at anchor
+        # Hours 97-100 (weigh anchor, restart transit)
+        110.0, 195.0, 270.0, 340.0,
     ]
 
     show_solver_log = true
