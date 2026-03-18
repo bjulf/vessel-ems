@@ -14,6 +14,9 @@ runs/
 Papers/
 report_draft/
 report*.html
+report.qmd
+Report_draft.pdf
+.current_run
 
 # IDE / OS
 .vscode/
