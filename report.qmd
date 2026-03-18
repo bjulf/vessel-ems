@@ -16,7 +16,7 @@ format:
 execute:
   echo: false
   warning: false
-jupyter: python3
+jupyter: model-venv
 ---
 
 ```{python}
@@ -187,6 +187,17 @@ soc_ref_pct = b["SOC_ref"] * 100.0
 soc_dev     = (wide["soc_pct"] - soc_ref_pct).abs()
 hours_online = df[df["u"] == 1].groupby("generator")["timestep"].nunique()
 
+def count_transitions(gen_df):
+    u = gen_df.sort_values("timestep")["u"].values
+    starts = int(((u[1:] == 1) & (u[:-1] == 0)).sum())
+    stops  = int(((u[1:] == 0) & (u[:-1] == 1)).sum())
+    return starts, stops
+
+gen_transitions = {
+    g: count_transitions(gdf)
+    for g, gdf in df.groupby("generator")
+}
+
 summary = {
     "Total fuel consumed": f"{wide['total_fuel'].sum()/1000:.1f} kg",
     "Mean fleet fuel rate": f"{wide['total_fuel'].mean()/1000:.2f} kg/h",
@@ -196,6 +207,8 @@ summary = {
     "Min SOC reached": f"{wide['soc_pct'].min():.1f} %",
     "Terminal SOC": f"{wide['soc_pct'].iloc[-1]:.1f} %",
     **{f"Gen {g} hours online": f"{h} h" for g, h in hours_online.items()},
+    **{f"Gen {g} starts": f"{starts}" for g, (starts, _) in gen_transitions.items()},
+    **{f"Gen {g} stops":  f"{stops}"  for g, (_, stops)  in gen_transitions.items()},
 }
 
 display(pd.DataFrame(summary.items(), columns=["Metric", "Value"]).to_html(index=False))
