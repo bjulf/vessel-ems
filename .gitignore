@@ -10,6 +10,10 @@ venv/
 # Output artifacts
 plots/
 dispatch_results.csv
+runs/
+Papers/
+report_draft/
+report*.html
 
 # IDE / OS
 .vscode/
