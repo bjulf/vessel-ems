@@ -60,8 +60,10 @@ function main()
     # ── Run identity ───────────────────────────────────────────────────────────
     # Set run_label before each run — it becomes part of the folder name.
     # Fill run_desc with a short note about what you're testing (optional).
-    run_label = "LoadProfile_v2"
-    run_desc  = "4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW."
+    run_label = "Initial run with early battery and generator model"
+    run_desc  = "4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW.
+    Battery model includes: SOC constraints, charge/discharge power limits, efficiency losses. Generator model includes
+     piecewise linear fuel consumption, with SOS2 constraints, min/max power limits symmetry-breaking constraints."
 
     git_hash  = strip(read(`git rev-parse HEAD`, String))
     git_dirty = !success(`git diff --quiet HEAD`)
