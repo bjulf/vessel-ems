@@ -80,7 +80,7 @@ function main()
         eta_dis   = 0.95,     #      discharging efficiency
         E_init    = 0.5*940,  # kWh  initial stored energy (50% SOC)
         dt        = 1.0,      # h    timestep duration
-        SOC_ref   = 0.8,      #      SOC reference target 
+        SOC_ref   = 0.35,      #      SOC reference target 
         soc_penalty = 10.0,    #      penalty weight λ for |SOC_t - SOC_ref| deviation
     )
 
