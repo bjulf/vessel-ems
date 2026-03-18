@@ -1,0 +1,35 @@
+[[generators]]
+P_max = 385.0
+P = [192.5, 288.75, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+P_min = 192.5
+[[generators]]
+P_max = 385.0
+P = [192.5, 288.75, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+P_min = 192.5
+
+[run]
+label = "LoadProfile_v2"
+git_hash = "ff7987aee024b448271b3ca8fd61b252fb026d00"
+git_dirty = false
+date = "2026-03-18"
+description = "4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW."
+
+[battery]
+eta_ch = 0.95
+E_init = 470.0
+P_dis_max = 943.2
+eta_dis = 0.95
+dt = 1.0
+E_max = 940.0
+soc_penalty = 10.0
+P_ch_max = 753.25
+SOC_min = 0.2
+SOC_ref = 0.35
+SOC_max = 0.9
+
+[solver]
+status = "OPTIMAL"
+solve_time_s = 0.5479187965393066
+objective = 6.210134845053634e6
