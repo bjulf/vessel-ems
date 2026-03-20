@@ -4,12 +4,12 @@ include("model.jl")
 
 format_num(x) = @sprintf("%.6f", isapprox(x, 0.0; atol=1e-9) ? 0.0 : x)
 
-function write_results_csv(path, load, gensets, battery, u, Pg, SFOC, lambda, P_ch, P_dis, E)
+function write_results_csv(path, load, gensets, battery, u, y, Pg, SFOC, lambda, P_ch, P_dis, E)
     max_breakpoints = maximum(length(g.SFOC) for g in gensets)
 
     open(path, "w") do io
-        header = ["timestep", "generator", "load_kw", "u", "Pg_kw",
-                  "sfoc_gkwh", "fuel_gph", "load_pct",
+        header = ["timestep", "generator", "load_kw", "u", "startup",
+                  "Pg_kw", "sfoc_gkwh", "fuel_gph", "load_pct",
                   "P_ch_kw", "P_dis_kw", "E_kwh", "soc_pct"]
         append!(header, ["lambda_$(i)" for i in 1:max_breakpoints])
         println(io, join(header, ","))
@@ -33,6 +33,7 @@ function write_results_csv(path, load, gensets, battery, u, Pg, SFOC, lambda, P_
                 string(g),
                 @sprintf("%.1f", load[t]),
                 value(u[g, t]) > 0.5 ? "1" : "0",
+                value(y[g, t]) > 0.5 ? "1" : "0",   # startup event
                 format_num(pg_val),
                 format_num(fg_val),
                 format_num(fuel),
@@ -60,14 +61,14 @@ function main()
     # ── Run identity ───────────────────────────────────────────────────────────
     # Set run_label before each run — it becomes part of the folder name.
     # Fill run_desc with a short note about what you're testing (optional).
-    run_label = "Initial run"
-    run_desc  = "4-day profile with low-demand port/anchorage stretches (0-100 kW) and peaks up to 700 kW. Initial run."
+    run_label = ""
+    run_desc  = ""
     git_hash  = strip(read(`git rev-parse HEAD`, String))
     git_dirty = !success(`git diff --quiet HEAD`)
 
     gensets = [
-        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198]),
-        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198])
+        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0),  # g fuel equivalent per start
+        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0)
     ]
 
     battery = (
@@ -114,7 +115,7 @@ function main()
 
     show_solver_log = true
 
-    model, u, Pg, SFOC, lambda, P_ch, P_dis, E, soc_dev = build_model(gensets, load, battery)
+    model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E, soc_dev = build_model(gensets, load, battery)
 
     if !show_solver_log
         set_silent(model)
@@ -157,10 +158,11 @@ function main()
             ),
             "generators" => [
                 Dict(
-                    "P_max" => g.P_max,
-                    "P_min" => g.P_min,
-                    "P"     => collect(Float64, g.P),
-                    "SFOC"  => collect(Float64, g.SFOC),
+                    "P_max"        => g.P_max,
+                    "P_min"        => g.P_min,
+                    "P"            => collect(Float64, g.P),
+                    "SFOC"         => collect(Float64, g.SFOC),
+                    "startup_cost" => g.startup_cost,
                 )
                 for g in gensets
             ],
@@ -171,7 +173,7 @@ function main()
 
         # ── Write results CSV ──────────────────────────────────────────────────
         csv_path = joinpath(run_dir, "dispatch_results.csv")
-        write_results_csv(csv_path, load, gensets, battery, u, Pg, SFOC, lambda, P_ch, P_dis, E)
+        write_results_csv(csv_path, load, gensets, battery, u, y, Pg, SFOC, lambda, P_ch, P_dis, E)
 
         # Write .current_run so report.qmd picks it up without env vars
         open(joinpath(@__DIR__, ".current_run"), "w") do io
