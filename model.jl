@@ -7,7 +7,7 @@ function build_model(gensets, load, battery)
 
     # ── Generator variables ────────────────────────────────────────────────
     @variable(model, u[g in G, t in T], Bin)                                      # on/off status
-    @variable(model, y[g in G, t in T], Bin)                                      # startup event (1 if g starts at t)
+    @variable(model, 0 <= y[g in G, t in T] <= 1)                                 # startup event (1 if g starts at t); continuous — integrality of u forces 0/1 at optimum
     @variable(model, Pg[g in G, t in T] >= 0)                                     # power output
     @variable(model, SFOC[g in G, t in T] >= 0)                                     # specific fuel oil consumption (g/kWh)
     @variable(model, 0 <= lambda[g in G, t in T, i in 1:length(gensets[g].SFOC)] <= 1)
