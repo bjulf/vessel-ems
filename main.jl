@@ -81,7 +81,7 @@ function main()
         eta_dis   = 0.95,     #      discharging efficiency
         E_init    = 0.5*940,  # kWh  initial stored energy (50% SOC)
         dt        = 1.0,      # h    timestep duration
-        c_bat     = 1.0,       # g/kWh  battery throughput penalty (degradation cost in fuel-equivalent units)
+        c_bat     = 10.0,      # g/kWh  battery throughput penalty (degradation cost in fuel-equivalent units)
     )
 
     # Load profile over 100-hour time horizon (~4 days), values in kW
