@@ -69,12 +69,11 @@ function build_model(gensets, load, battery)
 
     end
 
-    # ── Objective: minimise total fuel flow + startup cost + battery throughput penalty ──────
+    # ── Objective: minimise total fuel flow + startup cost ──────────────────────
     @objective(model, Min,
         sum(lambda[g, t, i] * gensets[g].SFOC[i] * gensets[g].P[i]
             for g in G, t in T, i in 1:length(gensets[g].SFOC)) +
-        sum(gensets[g].startup_cost * y[g, t] for g in G, t in T) +
-        battery.c_bat * sum(P_ch[t] + P_dis[t] for t in T)
+        sum(gensets[g].startup_cost * y[g, t] for g in G, t in T)
     )
     
 
