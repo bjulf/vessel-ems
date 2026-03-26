@@ -17,14 +17,6 @@ import matplotlib.patches as mpatches
 import seaborn as sns
 from pathlib import Path
 
-try:
-    import tomllib
-except ImportError:
-    try:
-        import tomli as tomllib
-    except ImportError:
-        raise ImportError("Python >= 3.11 required, or install tomli: pip install tomli")
-
 # ── Constants ──────────────────────────────────────────────────────────────────
 DPI  = 150
 SAVE = True
@@ -61,11 +53,6 @@ def _format_heatmap_xaxis(ax: plt.Axes) -> None:
 
 
 # ── Data loading ───────────────────────────────────────────────────────────────
-def _load_params(run_dir: Path) -> dict:
-    with open(run_dir / "params.toml", "rb") as f:
-        return tomllib.load(f)
-
-
 def load_data(run_dir: Path) -> pd.DataFrame:
     df = pd.read_csv(run_dir / "dispatch_results.csv")
     df["generator"] = df["generator"].astype(str)
@@ -156,7 +143,7 @@ def plot_total_fuel(df: pd.DataFrame, ax: plt.Axes) -> None:
 
 
 # ── Plot 6: Battery operation (power + SOC) ───────────────────────────────────
-def plot_battery(df: pd.DataFrame, ax: plt.Axes, soc_ref_pct: float) -> None:
+def plot_battery(df: pd.DataFrame, ax: plt.Axes) -> None:
     batt = df.groupby("timestep")[["P_ch_kw", "P_dis_kw", "soc_pct", "E_kwh"]].first()
     ts   = batt.index
 
@@ -174,12 +161,6 @@ def plot_battery(df: pd.DataFrame, ax: plt.Axes, soc_ref_pct: float) -> None:
     ekwh = batt["E_kwh"]
 
     ax2.plot(ts, soc, lw=2, color=COLORS["soc"], label="SOC")
-    ax2.axhline(soc_ref_pct, color="#e67e22", lw=1.5, ls="--",
-                label=f"SOC ref ({soc_ref_pct:.0f}%)", zorder=5)
-    ax2.fill_between(ts, soc, soc_ref_pct,
-                     where=(soc >= soc_ref_pct), alpha=0.18, color="#e67e22")
-    ax2.fill_between(ts, soc, soc_ref_pct,
-                     where=(soc <  soc_ref_pct), alpha=0.18, color="#c0392b")
 
     for t in {soc.idxmin(), soc.idxmax(), ts[-1]}:
         ax2.annotate(f"{ekwh[t]:.0f} kWh", (t, soc[t]),
@@ -192,58 +173,25 @@ def plot_battery(df: pd.DataFrame, ax: plt.Axes, soc_ref_pct: float) -> None:
     ax.set_title("Battery Operation")
 
 
-# ── Plot 7: SOC deviation analysis ────────────────────────────────────────────
-def plot_soc_deviation(df: pd.DataFrame, ax: plt.Axes, soc_ref_pct: float) -> None:
-    batt = df.groupby("timestep")["soc_pct"].first()
-    ts   = batt.index
-    dev  = (batt - soc_ref_pct).abs()
-
-    norm   = plt.Normalize(vmin=0, vmax=dev.max() if dev.max() > 0 else 1)
-    colors = [plt.cm.RdYlGn_r(norm(v)) for v in dev.values]
-
-    ax.bar(ts, dev.values, color=colors, edgecolor="white", linewidth=0.3)
-    ax.axhline(dev.mean(), color="steelblue", lw=1.5, ls="--",
-               label=f"Mean ({dev.mean():.1f} pp)")
-    _add_day_markers(ax)
-    ax.set_ylabel("|SOC – SOC_ref| [pp]")
-    ax.set_title(f"SOC Deviation from Reference ({soc_ref_pct:.0f}%)")
-    ax.legend(loc="upper left", fontsize=8)
-
-    t_max = dev.idxmax()
-    ax.annotate(f"max\n{dev[t_max]:.1f} pp",
-                xy=(t_max, dev[t_max]),
-                xytext=(0, 6), textcoords="offset points",
-                ha="center", fontsize=7, color="darkred")
-
-    ax2 = ax.twinx()
-    ax2.plot(ts, dev.cumsum().values, color="steelblue", lw=2)
-    ax2.set_ylabel("Cumulative [pp]")
-
-
 # ── Entry point ───────────────────────────────────────────────────────────────
 def make_figures(run_dir: Path, show: bool = True):
     """Generate all figures for a run directory. Returns (fig1, fig2)."""
-    params      = _load_params(run_dir)
-    soc_ref_pct = params["battery"]["SOC_ref"] * 100.0
-    df          = load_data(run_dir)
+    df = load_data(run_dir)
 
     sns.set_theme(style="whitegrid", context="notebook", palette="deep")
 
-    # Figure 1: Timeseries — three wide panels, shared x-axis
-    fig1 = plt.figure(figsize=(16, 15))
-    gs1  = gridspec.GridSpec(3, 1, figure=fig1,
-                             height_ratios=[2, 1.5, 1], hspace=0.08)
-    ax_power  = fig1.add_subplot(gs1[0])
-    ax_batt   = fig1.add_subplot(gs1[1], sharex=ax_power)
-    ax_socdev = fig1.add_subplot(gs1[2], sharex=ax_power)
+    # Figure 1: Timeseries — two wide panels, shared x-axis
+    fig1 = plt.figure(figsize=(16, 10))
+    gs1  = gridspec.GridSpec(2, 1, figure=fig1,
+                             height_ratios=[2, 1.5], hspace=0.08)
+    ax_power = fig1.add_subplot(gs1[0])
+    ax_batt  = fig1.add_subplot(gs1[1], sharex=ax_power)
     fig1.suptitle("Dispatch Optimisation – Timeseries", fontsize=14)
 
     plot_stacked_power(df, ax_power)
-    plot_battery(df, ax_batt, soc_ref_pct)
-    plot_soc_deviation(df, ax_socdev, soc_ref_pct)
+    plot_battery(df, ax_batt)
 
     plt.setp(ax_power.get_xticklabels(), visible=False)
-    plt.setp(ax_batt.get_xticklabels(),  visible=False)
     fig1.tight_layout(rect=[0, 0, 1, 0.97])
 
     # Figure 2: Generator detail — 2×2 grid

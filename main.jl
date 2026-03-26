@@ -81,8 +81,7 @@ function main()
         eta_dis   = 0.95,     #      discharging efficiency
         E_init    = 0.5*940,  # kWh  initial stored energy (50% SOC)
         dt        = 1.0,      # h    timestep duration
-        SOC_ref   = 0.80,      #      SOC reference target 
-        soc_penalty = 10.0,    #      penalty weight λ for |SOC_t - SOC_ref| deviation
+        c_bat     = 1.0,       # g/kWh  battery throughput penalty (degradation cost in fuel-equivalent units)
     )
 
     # Load profile over 100-hour time horizon (~4 days), values in kW
@@ -115,7 +114,7 @@ function main()
 
     show_solver_log = true
 
-    model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E, soc_dev = build_model(gensets, load, battery)
+    model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E = build_model(gensets, load, battery)
 
     if !show_solver_log
         set_silent(model)
@@ -153,8 +152,7 @@ function main()
                 "eta_dis"     => battery.eta_dis,
                 "E_init"      => battery.E_init,
                 "dt"          => battery.dt,
-                "SOC_ref"     => battery.SOC_ref,
-                "soc_penalty" => battery.soc_penalty,
+                "c_bat"       => battery.c_bat,
             ),
             "generators" => [
                 Dict(

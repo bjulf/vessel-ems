@@ -17,7 +17,6 @@ function build_model(gensets, load, battery)
     @variable(model, 0 <= P_dis[t in T] <= battery.P_dis_max)                     # discharging power
     @variable(model, battery.SOC_min * battery.E_max <= E[t in 1:length(load)+1] <= battery.SOC_max * battery.E_max)  # stored energy
     @variable(model, z_bat[t in T], Bin)                                             # battery charge/discharge status (1 if charging, 0 if discharging)
-    @variable(model, soc_dev[t in T] >= 0)                                           # |SOC_t - SOC_ref| linearisation auxiliary
 
     # ── Initial energy state ───────────────────────────────────────────────
     @constraint(model, E[1] == battery.E_init)
@@ -68,21 +67,18 @@ function build_model(gensets, load, battery)
             )
         )
 
-        # SOC deviation linearisation: soc_dev[t] >= |SOC_t - SOC_ref|
-        @constraint(model, soc_dev[t] >= E[t] / battery.E_max - battery.SOC_ref)
-        @constraint(model, soc_dev[t] >= battery.SOC_ref - E[t] / battery.E_max)
     end
 
-    # ── Objective: minimise total fuel flow + startup cost + SOC deviation penalty ─────────
+    # ── Objective: minimise total fuel flow + startup cost + battery throughput penalty ──────
     @objective(model, Min,
         sum(lambda[g, t, i] * gensets[g].SFOC[i] * gensets[g].P[i]
             for g in G, t in T, i in 1:length(gensets[g].SFOC)) +
         sum(gensets[g].startup_cost * y[g, t] for g in G, t in T) +
-        battery.soc_penalty * sum(soc_dev[t] for t in T)
+        battery.c_bat * sum(P_ch[t] + P_dis[t] for t in T)
     )
     
 
-    return model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E, soc_dev
+    return model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E
 end
 
 
