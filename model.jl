@@ -69,9 +69,12 @@ function build_model(gensets, load, battery)
 
     end
 
-    # ── Objective: minimise total fuel flow + startup cost ──────────────────────
+    # ── Objective: minimise total fuel consumed + startup cost ──────────────────
+    # battery.dt converts the per-hour fuel rate (SFOC [g/kWh] × P [kW] = g/h)
+    # to actual grams burned per timestep, keeping startup_cost (g equivalent)
+    # correctly weighted regardless of the chosen timestep duration.
     @objective(model, Min,
-        sum(lambda[g, t, i] * gensets[g].SFOC[i] * gensets[g].P[i]
+        battery.dt * sum(lambda[g, t, i] * gensets[g].SFOC[i] * gensets[g].P[i]
             for g in G, t in T, i in 1:length(gensets[g].SFOC)) +
         sum(gensets[g].startup_cost * y[g, t] for g in G, t in T)
     )
