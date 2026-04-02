@@ -38,7 +38,7 @@ function build_model(gensets, load, battery)
             @constraint(model, y[g, t] <= 1 - u_prev)          # y=0 if unit was already running
 
             @constraint(model, Pg[g, t] >= gensets[g].P_min * u[g, t])
-            @constraint(model, Pg[g, t] <= gensets[g].P_max * (u[g, t] - (gensets[g].t_start / battery.dt) * y[g, t]))
+            @constraint(model, Pg[g, t] <= gensets[g].P_max * u[g, t])
 
             @constraint(model, sum(lambda[g, t, i] for i in 1:length(gensets[g].SFOC)) == u[g, t])
 
