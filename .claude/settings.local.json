@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe -m jupyter kernelspec list)",
+      "Bash(.venv/Scripts/python.exe -c \"import ipykernel; print\\(ipykernel.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -m ipykernel_launcher --help)",
+      "Bash(quarto render:*)"
+    ]
+  }
+}

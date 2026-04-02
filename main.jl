@@ -67,8 +67,8 @@ function main()
     git_dirty = !success(`git diff --quiet HEAD`)
 
     gensets = [
-        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0),  # g fuel equivalent per start
-        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0)
+        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0, t_start = 2/60),  # t_start in hours (2 min startup delay)
+        (P_max=385.0, P_min=0.5*385, P = [0.5*385, 0.75*385, 310, 385], SFOC = [193,191,191,198], startup_cost = 15000.0, t_start = 2/60)
     ]
 
     battery = (
@@ -159,6 +159,7 @@ function main()
                     "P"            => collect(Float64, g.P),
                     "SFOC"         => collect(Float64, g.SFOC),
                     "startup_cost" => g.startup_cost,
+                    "t_start"      => g.t_start,
                 )
                 for g in gensets
             ],
