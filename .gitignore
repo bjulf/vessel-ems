@@ -9,6 +9,7 @@ venv/
 
 # Output artifacts
 plots/
+results/
 dispatch_results.csv
 runs/
 Papers/
