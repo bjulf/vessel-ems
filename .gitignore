@@ -18,6 +18,9 @@ report.qmd
 Report_draft.pdf
 .current_run
 
+# Claude Code
+.claude/settings.local.json
+
 # IDE / OS
 .vscode/
 *.swp
