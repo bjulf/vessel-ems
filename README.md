@@ -11,12 +11,26 @@ The model minimises total fuel consumption across a fleet of generators over a g
 | File | Description |
 |---|---|
 | `model.jl` | JuMP optimisation model (variables, constraints, objective) |
-| `main.jl` | Entry point — defines generator data, solves, writes CSV |
+| `main.jl` | Entry point — reads the active load profile, solves, writes CSV |
 | `types.jl` | Type definitions (reserved for future use) |
+| `data/generate_synthetic_profile.py` | Generates synthetic 24 h / 15 min load scenarios and plots |
 | `plot.py` | Python plotting script for dispatch results |
 | `Project.toml` | Julia package dependencies |
 
 ## Usage
+
+### Generate a synthetic load profile
+
+```bash
+python data/generate_synthetic_profile.py
+```
+
+This writes:
+
+- `data/load_profile.csv` as the active profile for `main.jl`
+- `data/synthetic_profiles/validation_profile.csv`
+- `data/synthetic_profiles/plots/validation_profile.png`
+- `data/synthetic_profiles/plots/validation_profile_bars.png`
 
 ### Solve the dispatch problem
 
@@ -24,7 +38,7 @@ The model minimises total fuel consumption across a fleet of generators over a g
 julia --project=. main.jl
 ```
 
-This produces `dispatch_results.csv` with per-generator, per-timestep results.
+This produces a run directory in `runs/` with `dispatch_results.csv` and `params.toml`.
 
 ### Plot results
 

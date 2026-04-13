@@ -1,0 +1,97 @@
+timestep,load_kw,datetime,module,module_label,scenario
+1,37.0,2026-03-01 00:00,harbor_hotel,Harbor / hotel,validation
+2,39.07,2026-03-01 00:15,harbor_hotel,Harbor / hotel,validation
+3,39.32,2026-03-01 00:30,harbor_hotel,Harbor / hotel,validation
+4,38.63,2026-03-01 00:45,harbor_hotel,Harbor / hotel,validation
+5,38.59,2026-03-01 01:00,harbor_hotel,Harbor / hotel,validation
+6,36.36,2026-03-01 01:15,harbor_hotel,Harbor / hotel,validation
+7,36.25,2026-03-01 01:30,harbor_hotel,Harbor / hotel,validation
+8,36.74,2026-03-01 01:45,harbor_hotel,Harbor / hotel,validation
+9,33.29,2026-03-01 02:00,harbor_hotel,Harbor / hotel,validation
+10,33.34,2026-03-01 02:15,harbor_hotel,Harbor / hotel,validation
+11,36.11,2026-03-01 02:30,harbor_hotel,Harbor / hotel,validation
+12,37.54,2026-03-01 02:45,harbor_hotel,Harbor / hotel,validation
+13,89.42,2026-03-01 03:00,aux_work,Auxiliary work,validation
+14,99.62,2026-03-01 03:15,aux_work,Auxiliary work,validation
+15,75.7,2026-03-01 03:30,aux_work,Auxiliary work,validation
+16,94.5,2026-03-01 03:45,aux_work,Auxiliary work,validation
+17,104.16,2026-03-01 04:00,aux_work,Auxiliary work,validation
+18,98.77,2026-03-01 04:15,aux_work,Auxiliary work,validation
+19,121.86,2026-03-01 04:30,aux_work,Auxiliary work,validation
+20,106.64,2026-03-01 04:45,aux_work,Auxiliary work,validation
+21,88.09,2026-03-01 05:00,aux_work,Auxiliary work,validation
+22,100.56,2026-03-01 05:15,aux_work,Auxiliary work,validation
+23,95.16,2026-03-01 05:30,aux_work,Auxiliary work,validation
+24,79.97,2026-03-01 05:45,aux_work,Auxiliary work,validation
+25,83.19,2026-03-01 06:00,aux_work,Auxiliary work,validation
+26,101.62,2026-03-01 06:15,aux_work,Auxiliary work,validation
+27,79.05,2026-03-01 06:30,aux_work,Auxiliary work,validation
+28,117.9,2026-03-01 06:45,aux_work,Auxiliary work,validation
+29,200.44,2026-03-01 07:00,transit,Transit,validation
+30,190.97,2026-03-01 07:15,transit,Transit,validation
+31,202.59,2026-03-01 07:30,transit,Transit,validation
+32,201.32,2026-03-01 07:45,transit,Transit,validation
+33,199.54,2026-03-01 08:00,transit,Transit,validation
+34,210.83,2026-03-01 08:15,transit,Transit,validation
+35,206.03,2026-03-01 08:30,transit,Transit,validation
+36,197.74,2026-03-01 08:45,transit,Transit,validation
+37,201.83,2026-03-01 09:00,transit,Transit,validation
+38,202.36,2026-03-01 09:15,transit,Transit,validation
+39,197.43,2026-03-01 09:30,transit,Transit,validation
+40,198.82,2026-03-01 09:45,transit,Transit,validation
+41,193.64,2026-03-01 10:00,transit,Transit,validation
+42,194.48,2026-03-01 10:15,transit,Transit,validation
+43,195.71,2026-03-01 10:30,transit,Transit,validation
+44,185.76,2026-03-01 10:45,transit,Transit,validation
+45,188.27,2026-03-01 11:00,transit,Transit,validation
+46,185.17,2026-03-01 11:15,transit,Transit,validation
+47,187.68,2026-03-01 11:30,transit,Transit,validation
+48,183.15,2026-03-01 11:45,transit,Transit,validation
+49,186.84,2026-03-01 12:00,transit,Transit,validation
+50,190.06,2026-03-01 12:15,transit,Transit,validation
+51,196.44,2026-03-01 12:30,transit,Transit,validation
+52,199.58,2026-03-01 12:45,transit,Transit,validation
+53,168.13,2026-03-01 13:00,maneuvering,Maneuvering,validation
+54,192.7,2026-03-01 13:15,maneuvering,Maneuvering,validation
+55,182.72,2026-03-01 13:30,maneuvering,Maneuvering,validation
+56,233.73,2026-03-01 13:45,maneuvering,Maneuvering,validation
+57,255.5,2026-03-01 14:00,maneuvering,Maneuvering,validation
+58,182.76,2026-03-01 14:15,maneuvering,Maneuvering,validation
+59,242.28,2026-03-01 14:30,maneuvering,Maneuvering,validation
+60,272.66,2026-03-01 14:45,maneuvering,Maneuvering,validation
+61,239.91,2026-03-01 15:00,maneuvering,Maneuvering,validation
+62,242.13,2026-03-01 15:15,maneuvering,Maneuvering,validation
+63,165.85,2026-03-01 15:30,maneuvering,Maneuvering,validation
+64,187.51,2026-03-01 15:45,maneuvering,Maneuvering,validation
+65,215.92,2026-03-01 16:00,maneuvering,Maneuvering,validation
+66,220.46,2026-03-01 16:15,maneuvering,Maneuvering,validation
+67,122.59,2026-03-01 16:30,maneuvering,Maneuvering,validation
+68,190.26,2026-03-01 16:45,maneuvering,Maneuvering,validation
+69,357.62,2026-03-01 17:00,high_transient,High transient,validation
+70,352.45,2026-03-01 17:15,high_transient,High transient,validation
+71,371.63,2026-03-01 17:30,high_transient,High transient,validation
+72,397.16,2026-03-01 17:45,high_transient,High transient,validation
+73,326.76,2026-03-01 18:00,high_transient,High transient,validation
+74,334.26,2026-03-01 18:15,high_transient,High transient,validation
+75,372.95,2026-03-01 18:30,high_transient,High transient,validation
+76,327.39,2026-03-01 18:45,high_transient,High transient,validation
+77,363.66,2026-03-01 19:00,high_transient,High transient,validation
+78,396.68,2026-03-01 19:15,high_transient,High transient,validation
+79,419.23,2026-03-01 19:30,high_transient,High transient,validation
+80,273.18,2026-03-01 19:45,high_transient,High transient,validation
+81,770.0,2026-03-01 20:00,stress_switching,Stress switching,validation
+82,152.86,2026-03-01 20:15,stress_switching,Stress switching,validation
+83,770.0,2026-03-01 20:30,stress_switching,Stress switching,validation
+84,138.14,2026-03-01 20:45,stress_switching,Stress switching,validation
+85,770.0,2026-03-01 21:00,stress_switching,Stress switching,validation
+86,730.06,2026-03-01 21:15,stress_switching,Stress switching,validation
+87,0.0,2026-03-01 21:30,stress_switching,Stress switching,validation
+88,261.85,2026-03-01 21:45,stress_switching,Stress switching,validation
+89,770.0,2026-03-01 22:00,stress_switching,Stress switching,validation
+90,733.07,2026-03-01 22:15,stress_switching,Stress switching,validation
+91,770.0,2026-03-01 22:30,stress_switching,Stress switching,validation
+92,754.9,2026-03-01 22:45,stress_switching,Stress switching,validation
+93,0.0,2026-03-01 23:00,stress_switching,Stress switching,validation
+94,401.3,2026-03-01 23:15,stress_switching,Stress switching,validation
+95,0.0,2026-03-01 23:30,stress_switching,Stress switching,validation
+96,571.93,2026-03-01 23:45,stress_switching,Stress switching,validation
