@@ -1,0 +1,22 @@
+Startup fuel estimate
+Source: C:\Users\bulve\OneDrive\master\model\data\v01_clean.csv
+
+Per-event results:
+ gen          start_time         stable_time regime  minutes_before_stable  fuel_before_stable_l  fuel_before_stable_g  max_load_before_stable_pct  max_speed_before_stable
+   1 2026-03-01 11:28:00 2026-03-01 11:31:00   1400                      3                 0.301                 252.6                       22.20                  1281.77
+   1 2026-03-01 21:39:00 2026-03-01 21:42:00   1800                      3                 0.678                 569.7                       21.32                  1046.09
+   1 2026-03-02 02:47:00 2026-03-02 02:50:00   1400                      3                 0.236                 198.1                       20.81                  1343.47
+   1 2026-03-03 08:28:00 2026-03-03 08:31:00   1800                      3                 0.192                 161.7                       23.40                   882.26
+   1 2026-03-03 13:23:00 2026-03-03 13:30:00   1800                      7                 3.026                2541.7                       48.01                  1689.00
+   2 2026-03-02 14:54:00 2026-03-02 14:57:00   1800                      3                 0.481                 403.9                       34.85                  1191.61
+   2 2026-03-02 18:05:00 2026-03-02 18:08:00   1400                      3                 0.138                 115.5                       10.23                   930.11
+   2 2026-03-03 15:17:00 2026-03-03 15:22:00   1800                      4                 0.733                 616.0                       48.50                  1379.50
+
+Grouped by target stable regime:
+       minutes_before_stable                     fuel_before_stable_l                          fuel_before_stable_g                              
+                       count mean median min max                count  mean median   min   max                count    mean median    min     max
+regime                                                                                                                                           
+1400                       3  3.0    3.0   3   3                    3  0.22   0.24  0.14  0.30                    3  188.73  198.1  115.5   252.6
+1800                       5  4.0    3.0   3   7                    5  1.02   0.68  0.19  3.03                    5  858.60  569.7  161.7  2541.7
+
+Overall fuel_before_stable_g mean / median: 607.4 / 328.2

@@ -1,0 +1,33 @@
+Telemetry SFOC first-pass fit
+Sources:
+  - C:\Users\bulve\OneDrive\master\model\analysis\sfoc_datasets\march_window_2026-03-04_2026-03-06.csv
+Rows: 3961
+Time range: 2026-03-04 05:00:00 to 2026-03-06 23:00:00
+Cadence counts (minutes): {1.0: 3960}
+Steady filtered points: 918
+Both-gensets-online points in source data: 7
+
+~1800 rpm regime
+  filtered points: 826
+  power range: 182.9 to 298.4 kW
+  load range: 47.5 to 77.5 %
+  sfoc median/p10/p90: 211.3 / 209.5 / 215.5
+  supported bins: [{'load_bin': Interval(40, 50, closed='left'), 'n': 362}, {'load_bin': Interval(50, 60, closed='left'), 'n': 333}, {'load_bin': Interval(60, 70, closed='left'), 'n': 44}, {'load_bin': Interval(70, 80, closed='left'), 'n': 87}]
+  supported load-span: 26.0 percentage points
+  linear fuel fit: fuel_gph = -3784.8 + 230.504 * power_kw
+  judgment: adequate for a provisional sensitivity-case curve
+
+~1400 rpm regime
+  filtered points: 92
+  power range: 79.3 to 198.6 kW
+  load range: 20.6 to 51.6 %
+  sfoc median/p10/p90: 180.4 / 178.1 / 182.0
+  supported bins: [{'load_bin': Interval(40, 50, closed='left'), 'n': 56}, {'load_bin': Interval(50, 60, closed='left'), 'n': 30}]
+  supported load-span: 6.5 percentage points
+  judgment: insufficient supported load-span for a defensible regime-wide curve
+
+Overall judgment
+  The operational data support two distinct speed regimes and a first-pass telemetry-derived sensitivity case.
+  The ~1800 rpm regime has the strongest support, with stable coverage from about 50% to 78% load.
+  The ~1400 rpm regime is concentrated near 48% to 50% load and is too narrow to support a full regime curve with confidence.
+  OEM should remain the active baseline until telemetry breakpoints are tested in the optimizer and, ideally, true per-genset kW is available.

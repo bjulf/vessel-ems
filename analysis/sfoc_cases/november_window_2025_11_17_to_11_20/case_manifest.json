@@ -1,0 +1,38 @@
+{
+  "case_label": "november_window_2025_11_17_to_11_20",
+  "data_paths": [
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\november_window_2025-11-17_2025-11-20.csv"
+  ],
+  "rows": 3901,
+  "steady_points": 452,
+  "time_range": {
+    "start": "2025-11-17 09:00:00",
+    "end": "2025-11-20 02:00:00"
+  },
+  "regime_counts": {
+    "lt1600": 321,
+    "ge1600": 131
+  },
+  "supported_bins": [
+    {
+      "regime": "ge1600",
+      "load_bin": "[70, 80)",
+      "n": 113
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[10, 20)",
+      "n": 63
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[20, 30)",
+      "n": 58
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[40, 50)",
+      "n": 175
+    }
+  ]
+}

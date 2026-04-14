@@ -1,0 +1,20 @@
+Telemetry vs OEM diagnostic at supported breakpoint medians
+Source telemetry breakpoints: C:\Users\bulve\OneDrive\master\model\analysis\sfoc_cases\january_window_2026_01_14_to_01_16\sfoc_regime_breakpoints.csv
+Interpretation note: if fuel_delta_pct and sfoc_delta_pct are similar, the mismatch is already present in fuel-vs-power, not mainly created by dividing by proxy power.
+
+~1800 rpm
+  [60, 70): P=255.6 kW, fuel=54755 g/h vs OEM 48960 g/h (+11.8%), SFOC=214.1 vs OEM 191.7 (+11.7%), power-scale-to-match-OEM=1.117
+  [70, 80): P=294.5 kW, fuel=64369 g/h vs OEM 56254 g/h (+14.4%), SFOC=218.8 vs OEM 191.0 (+14.5%), power-scale-to-match-OEM=1.144
+  mean fuel delta: +13.1%, mean SFOC delta: +13.1%, mean power-scale-to-match-OEM: 1.131
+
+~1400 rpm
+  [10, 20): P=51.4 kW, fuel=8417 g/h vs OEM 37152 g/h (-77.3%), SFOC=169.3 vs OEM 193.0 (-12.3%), power-scale-to-match-OEM=0.848
+  [20, 30): P=86.6 kW, fuel=15380 g/h vs OEM 37152 g/h (-58.6%), SFOC=177.2 vs OEM 193.0 (-8.2%), power-scale-to-match-OEM=0.920
+  [40, 50): P=182.9 kW, fuel=33079 g/h vs OEM 37152 g/h (-11.0%), SFOC=180.9 vs OEM 193.0 (-6.3%), power-scale-to-match-OEM=0.937
+  mean fuel delta: -49.0%, mean SFOC delta: -8.9%, mean power-scale-to-match-OEM: 0.902
+
+Bottom line
+  The ~1800 rpm telemetry points sit above the OEM fuel curve by about 10% to 14% over the supported range.
+  The ~1400 rpm telemetry points sit below the OEM fuel curve by about 6% to 10% over their narrow supported range.
+  Because the fuel and SFOC deltas are nearly the same magnitude, the disagreement is not mainly an artifact of the SFOC conversion step.
+  A pure power-proxy calibration fix would need only about -6% adjustment for ~1400 rpm points but +10% to +14% for ~1800 rpm points, which is not a single consistent correction.

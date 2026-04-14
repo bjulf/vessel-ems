@@ -1,0 +1,62 @@
+{
+  "case_label": "full_combined_all_windows",
+  "data_paths": [
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\data\\v01_clean.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\march_window_2026-03-04_2026-03-06.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\november_window_2025-11-17_2025-11-20.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\january_window_2026-01-05_2026-01-07.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\january_window_2026-01-14_2026-01-16.csv"
+  ],
+  "rows": 19741,
+  "steady_points": 2939,
+  "time_range": {
+    "start": "2025-11-17 09:00:00",
+    "end": "2026-03-06 23:00:00"
+  },
+  "regime_counts": {
+    "ge1600": 1737,
+    "lt1600": 1202
+  },
+  "supported_bins": [
+    {
+      "regime": "ge1600",
+      "load_bin": "[40, 50)",
+      "n": 362
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[50, 60)",
+      "n": 747
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[60, 70)",
+      "n": 176
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[70, 80)",
+      "n": 452
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[10, 20)",
+      "n": 112
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[20, 30)",
+      "n": 223
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[40, 50)",
+      "n": 780
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[50, 60)",
+      "n": 78
+    }
+  ]
+}

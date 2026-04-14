@@ -1,0 +1,49 @@
+{
+  "case_label": "march_combined_v01_plus_window",
+  "data_paths": [
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\data\\v01_clean.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\march_window_2026-03-04_2026-03-06.csv"
+  ],
+  "rows": 7920,
+  "steady_points": 1706,
+  "time_range": {
+    "start": "2026-03-01 00:00:00",
+    "end": "2026-03-06 23:00:00"
+  },
+  "regime_counts": {
+    "ge1600": 1216,
+    "lt1600": 490
+  },
+  "supported_bins": [
+    {
+      "regime": "ge1600",
+      "load_bin": "[40, 50)",
+      "n": 362
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[50, 60)",
+      "n": 579
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[60, 70)",
+      "n": 115
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[70, 80)",
+      "n": 160
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[40, 50)",
+      "n": 410
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[50, 60)",
+      "n": 59
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "case_label": "low_speed_followup_combined",
+  "data_paths": [
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\november_window_2025-11-17_2025-11-20.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\january_window_2026-01-05_2026-01-07.csv",
+    "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\sfoc_datasets\\january_window_2026-01-14_2026-01-16.csv"
+  ],
+  "rows": 11821,
+  "steady_points": 1233,
+  "time_range": {
+    "start": "2025-11-17 09:00:00",
+    "end": "2026-01-16 22:00:00"
+  },
+  "regime_counts": {
+    "lt1600": 712,
+    "ge1600": 521
+  },
+  "supported_bins": [
+    {
+      "regime": "ge1600",
+      "load_bin": "[50, 60)",
+      "n": 168
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[60, 70)",
+      "n": 61
+    },
+    {
+      "regime": "ge1600",
+      "load_bin": "[70, 80)",
+      "n": 292
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[10, 20)",
+      "n": 109
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[20, 30)",
+      "n": 207
+    },
+    {
+      "regime": "lt1600",
+      "load_bin": "[40, 50)",
+      "n": 370
+    }
+  ]
+}

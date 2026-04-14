@@ -1,0 +1,25 @@
+Load Percentage Proxy Validation
+Source: C:\Users\bulve\OneDrive\master\model\data\v01.csv
+Rows: 3959
+Active rows used in comparison: 3958
+
+Proxy definition
+  genset_kw_proxy = (gen1_load_pct + gen2_load_pct) / 100 * 385
+  supply_kw_proxy = genset_kw_proxy + battery_power
+  known_load_kw = propulsion inverter powers + thruster inverter powers
+  other_load_kw = supply_kw_proxy - known_load_kw
+
+Key results
+  corr(supply_kw_proxy, known_load_kw): 0.986
+  battery power min / max: -293.1 / 104.1 kW
+  battery charging rows / discharging rows: 1114 / 2840
+  other_load_kw mean / median: 27.6 / 22.8 kW
+  other_load_kw p10 / p90: 18.4 / 51.8 kW
+  other_load_kw min / max: -4.4 / 125.3 kW
+  share with other_load_kw < -5 kW: 0.00 %
+
+Interpretation
+  The proxy supply tracks the known exported load-side powers closely.
+  The positive residual is consistent with unmetered hotel and auxiliary load on the vessel bus.
+  The low rate of negative residuals supports the sign convention and suggests the load % signal is a sensible generator-output proxy.
+  This validates the proxy for exploratory analysis, not as a replacement for measured per-genset active kW.

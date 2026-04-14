@@ -18,9 +18,16 @@ The main workflow is:
 - `main.jl`: main entry point, run metadata, solver execution, and result export
 - `model.jl`: JuMP model formulation and optimization variables/constraints/objective
 - `types.jl`: currently unused type definitions and notes
-- `data/preprocess.py`: builds `data/load_profile.csv` from raw operational data
+- `data/preprocess.py`: builds `data/load_profile.csv` for the default MILP input and `data/operational_profiles/operational_load_profile_1min.csv` for comparison and timestep-sensitivity work
+- `data/operational_profiles/`: reconstructed operational comparison profiles derived from telemetry
 - `plot.py`: plotting utilities for a specific run directory
 - `report.qmd`: Quarto report driven by `.current_run` or `RUN_DIR`
+- `analysis/`: working analysis scripts, notes, and exploratory outputs
+- `analysis/output/`: working top-level outputs and intermediate figure exports
+- `analysis/sfoc_cases/`: preserved telemetry-SFOC case outputs and case index
+- `analysis/sfoc_datasets/`: preserved fetched telemetry windows used in SFOC work
+- `analysis/thesis_figures/`: curated thesis-ready or thesis-candidate figures copied from working outputs
+- `analysis/handoffs/`: handoff notes for continuing figure/report work in another AI thread
 - `data/`: raw and derived input data
 - `runs/`: generated run directories with `params.toml`, `dispatch_results.csv`, and plots
 - `results/`: archived scenario/report outputs; treat as user-owned historical artifacts unless asked otherwise
@@ -36,6 +43,8 @@ The main workflow is:
 
 - Keep `data/preprocess.py:RESAMPLE_MINUTES` aligned with `main.jl:dt_minutes`. These must represent the same timestep length.
 - `main.jl` expects `data/load_profile.csv` with columns `timestep,load_kw,datetime`.
+- Treat `data/load_profile.csv` as the default model input tied to `main.jl:dt_minutes`, not as the preserved high-resolution operational comparison profile.
+- Treat `data/operational_profiles/operational_load_profile_1min.csv` as the preserved 1-minute reconstructed operational profile for final comparison and timestep sensitivity. Do not repurpose it as the default MILP input without an explicit model-timestep change.
 - `main.jl` writes the active run path to `.current_run`; `report.qmd` relies on that when `RUN_DIR` is not set.
 - `model.jl` contains a symmetry-breaking power-ordering constraint for generators. If generators stop being identical, revisit that logic before keeping the ordering constraint.
 - Battery energy dynamics, objective scaling, and reported fuel totals all depend on `battery.dt`; timestep edits need a full end-to-end consistency check.
@@ -46,6 +55,9 @@ The main workflow is:
 - When changing optimization behavior, inspect both `model.jl` and `main.jl`; parameters are defined in `main.jl`, not a separate config file.
 - Do not hand-edit files inside `runs/` unless the task is explicitly about repairing generated artifacts.
 - Do not remove or rewrite files in `results/` just because newer run outputs exist.
+- Treat `analysis/sfoc_cases/` and `analysis/sfoc_datasets/` as preserved analysis records. Do not delete or overwrite them casually.
+- Treat `analysis/output/` as a working area, not the final curated location for thesis figures.
+- When a plot becomes a real thesis candidate, copy it into `analysis/thesis_figures/` rather than relying on `analysis/output/` alone.
 - Several files contain mojibake or non-ASCII comment artifacts. Do not perform broad encoding cleanups unless the task specifically requires it.
 - Keep report/plot changes aligned with the actual columns exported by `write_results_csv(...)`.
 
@@ -59,6 +71,19 @@ When generating plots that are likely to be reused in the thesis or reports:
 - Avoid redundant legends when the same categories are already clearly labeled in the plot
 - Keep the layout visually simple and prioritize legibility over decorative detail
 
+## Analysis and figure workflow
+
+- Keep exploratory scripts and notes in `analysis/`.
+- Keep one-off or intermediate outputs in `analysis/output/`.
+- Keep preserved telemetry case outputs in `analysis/sfoc_cases/`.
+- Keep thesis-candidate figures in `analysis/thesis_figures/methods/` and `analysis/thesis_figures/results/`.
+- Add or update a short note in `analysis/thesis_figures/README.md` when a new figure becomes a serious thesis candidate.
+- Keep continuation notes in `analysis/handoffs/` when a thread produces reusable guidance for later report or plotting work.
+- For operational telemetry work, separate:
+  - general operational data / load reconstruction validation,
+  - and telemetry-based SFOC assessment.
+- Do not force internal diagnostic plots into the thesis when a clearer explanatory figure can be generated from the same data.
+
 ## Validation workflow
 
 Use the smallest relevant validation for the change:
@@ -66,6 +91,7 @@ Use the smallest relevant validation for the change:
 - Data pipeline changes:
   - Run `python data/preprocess.py`
   - Confirm `data/load_profile.csv` shape and datetime range look reasonable
+  - If the change affects operational comparison inputs, also confirm `data/operational_profiles/operational_load_profile_1min.csv` shape and datetime range
 - Model or parameter changes:
   - Run `julia --project=. main.jl`
   - Check solver status and inspect the newly created directory in `runs/`

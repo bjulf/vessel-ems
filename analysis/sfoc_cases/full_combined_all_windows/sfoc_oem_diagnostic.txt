@@ -1,0 +1,23 @@
+Telemetry vs OEM diagnostic at supported breakpoint medians
+Source telemetry breakpoints: C:\Users\bulve\OneDrive\master\model\analysis\sfoc_cases\full_combined_all_windows\sfoc_regime_breakpoints.csv
+Interpretation note: if fuel_delta_pct and sfoc_delta_pct are similar, the mismatch is already present in fuel-vs-power, not mainly created by dividing by proxy power.
+
+~1800 rpm
+  [40, 50): P=190.6 kW, fuel=40030 g/h vs OEM 37152 g/h (+7.7%), SFOC=211.3 vs OEM 193.0 (+9.5%), power-scale-to-match-OEM=1.088
+  [50, 60): P=198.3 kW, fuel=42008 g/h vs OEM 38232 g/h (+9.9%), SFOC=210.9 vs OEM 192.9 (+9.3%), power-scale-to-match-OEM=1.098
+  [60, 70): P=252.2 kW, fuel=53915 g/h vs OEM 48312 g/h (+11.6%), SFOC=214.2 vs OEM 191.8 (+11.7%), power-scale-to-match-OEM=1.115
+  [70, 80): P=290.7 kW, fuel=63462 g/h vs OEM 55519 g/h (+14.3%), SFOC=218.5 vs OEM 191.0 (+14.4%), power-scale-to-match-OEM=1.143
+  mean fuel delta: +10.9%, mean SFOC delta: +11.2%, mean power-scale-to-match-OEM: 1.111
+
+~1400 rpm
+  [10, 20): P=57.6 kW, fuel=9778 g/h vs OEM 37152 g/h (-73.7%), SFOC=172.7 vs OEM 193.0 (-10.5%), power-scale-to-match-OEM=0.879
+  [20, 30): P=86.6 kW, fuel=15271 g/h vs OEM 37152 g/h (-58.9%), SFOC=177.2 vs OEM 193.0 (-8.2%), power-scale-to-match-OEM=0.913
+  [40, 50): P=183.4 kW, fuel=33243 g/h vs OEM 37152 g/h (-10.5%), SFOC=180.9 vs OEM 193.0 (-6.3%), power-scale-to-match-OEM=0.939
+  [50, 60): P=194.4 kW, fuel=35162 g/h vs OEM 37512 g/h (-6.3%), SFOC=181.3 vs OEM 193.0 (-6.0%), power-scale-to-match-OEM=0.937
+  mean fuel delta: -37.3%, mean SFOC delta: -7.8%, mean power-scale-to-match-OEM: 0.917
+
+Bottom line
+  ~1400 rpm telemetry sits below OEM by about -73.7% to -6.3% in fuel and -10.5% to -6.0% in SFOC across the supported bins.
+  ~1800 rpm telemetry sits above OEM by about +7.7% to +14.3% in fuel and +9.3% to +14.4% in SFOC across the supported bins.
+  Because the fuel and SFOC deltas are nearly the same magnitude, the disagreement is not mainly an artifact of the SFOC conversion step.
+  A single power-proxy calibration fix would not reconcile both regimes to OEM at the same time.
