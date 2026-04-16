@@ -1,5 +1,5 @@
 
-function build_model(gensets, load, battery)
+function build_model(gensets, load, battery, initial_commitment)
     model = Model(HiGHS.Optimizer)
 
     G = 1:length(gensets)
@@ -9,7 +9,8 @@ function build_model(gensets, load, battery)
     @variable(model, u[g in G, t in T], Bin)                                      # on/off status
     @variable(model, 0 <= y[g in G, t in T] <= 1)                                 # startup event (1 if g starts at t); continuous — integrality of u forces 0/1 at optimum
     @variable(model, Pg[g in G, t in T] >= 0)                                     # power output
-    @variable(model, SFOC[g in G, t in T] >= 0)                                     # specific fuel oil consumption (g/kWh)
+    @variable(model, SFOC[g in G, t in T] >= 0)                                   # specific fuel oil consumption (g/kWh)
+    @variable(model, mdot[g in G, t in T] >= 0)                                   # fuel mass flow (g/h)
     @variable(model, 0 <= lambda[g in G, t in T, i in 1:length(gensets[g].SFOC)] <= 1)
 
     # ── Battery variables ──────────────────────────────────────────────────
@@ -31,8 +32,8 @@ function build_model(gensets, load, battery)
         # ── Generator constraints ──────────────────────────────────────────
         for g in G
             # Startup indicator: y[g,t] = 1 iff unit transitions off→on at t.
-            # u_prev = 0 for t=1 (all units assumed offline before horizon).
-            u_prev = (t == 1) ? 0 : u[g, t-1]
+            # For the first model step, use the configured pre-horizon commitment.
+            u_prev = (t == 1) ? initial_commitment[g] : u[g, t-1]
             @constraint(model, y[g, t] >= u[g, t] - u_prev)   # force y=1 on off→on transition
             @constraint(model, y[g, t] <= u[g, t])             # y=0 if unit is currently off
             @constraint(model, y[g, t] <= 1 - u_prev)          # y=0 if unit was already running
@@ -45,6 +46,14 @@ function build_model(gensets, load, battery)
             @constraint(model, Pg[g, t] == sum(lambda[g, t, i] * gensets[g].P[i] for i in 1:length(gensets[g].SFOC)))
 
             @constraint(model, SFOC[g, t] == sum(lambda[g, t, i] * gensets[g].SFOC[i] for i in 1:length(gensets[g].SFOC)))
+
+            @constraint(
+                model,
+                mdot[g, t] == sum(
+                    lambda[g, t, i] * gensets[g].P[i] * gensets[g].SFOC[i]
+                    for i in 1:length(gensets[g].SFOC)
+                )
+            )
 
             @constraint(model, [lambda[g, t, i] for i in 1:length(gensets[g].SFOC)] in SOS2())
         end
@@ -69,15 +78,14 @@ function build_model(gensets, load, battery)
 
     end
 
-    # ── Objective: minimise total fuel flow + startup cost ──────────────────────
+    # ── Objective: minimise timestep fuel use + startup cost ────────────────────
     @objective(model, Min,
-        sum(lambda[g, t, i] * gensets[g].SFOC[i] * gensets[g].P[i]
-            for g in G, t in T, i in 1:length(gensets[g].SFOC)) +
+        battery.dt * sum(mdot[g, t] for g in G, t in T) +
         sum(gensets[g].startup_cost * y[g, t] for g in G, t in T)
     )
     
 
-    return model, u, y, Pg, SFOC, lambda, P_ch, P_dis, E
+    return model, u, y, Pg, SFOC, mdot, lambda, P_ch, P_dis, E
 end
 
 

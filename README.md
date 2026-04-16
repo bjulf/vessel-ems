@@ -12,6 +12,7 @@ The model minimises total fuel consumption across a fleet of generators over a g
 |---|---|
 | `model.jl` | JuMP optimisation model (variables, constraints, objective) |
 | `main.jl` | Entry point — reads the active load profile, solves, writes CSV |
+| `config/baseline_model.toml` | Baseline run parameters and default model input selection |
 | `types.jl` | Type definitions (reserved for future use) |
 | `data/generate_synthetic_profile.py` | Generates synthetic 24 h / 15 min load scenarios and plots |
 | `plot.py` | Python plotting script for dispatch results |
@@ -36,6 +37,13 @@ This writes:
 
 ```bash
 julia --project=. main.jl
+```
+
+By default this loads `config/baseline_model.toml`.
+You can also provide a different parameter file:
+
+```bash
+julia --project=. main.jl config/baseline_model.toml
 ```
 
 This produces a run directory in `runs/` with `dispatch_results.csv` and `params.toml`.

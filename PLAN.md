@@ -1,5 +1,25 @@
 # PLAN: Building a Defensible Telemetry-Based SFOC Approximation
 
+## Highest-Priority Blocker
+
+Before any further studies, sensitivity analysis, or new result generation in this repository, the Julia implementation must be aligned with the frozen thesis baseline.
+
+- Treat this alignment work as a blocker for further studies and reported results.
+- Treat the frozen report-side baseline as the source of truth:
+  - `C:\Users\bulve\OneDrive\master\report\695e178abaa53b0c7651d409\BASELINE_MODEL.md`
+- `C:\Users\bulve\OneDrive\master\report\695e178abaa53b0c7651d409\PARAMETERS.md`
+- `C:\Users\bulve\OneDrive\master\report\695e178abaa53b0c7651d409\Sections\03_Methods.tex`
+- Do not rationalize code/report differences as acceptable drift. If the implementation differs from the frozen thesis baseline, the implementation must be updated or the mismatch must be explicitly resolved before proceeding.
+
+### Current baseline-alignment status
+
+- The baseline run is now configured through `config/baseline_model.toml`.
+- The baseline config now points to the synthetic report-side validation profile in `data/synthetic_profiles/validation_profile.csv` (`24 h`, `15 min`, `K = 96`).
+- Baseline parameter values for generator limits, breakpoint powers, startup cost, SOC bounds, and synthetic initial conditions are now expressed in the config file rather than hardcoded in `main.jl`.
+- The implementation is still **not** identical to the frozen thesis baseline yet.
+- The main remaining blocker is the objective implementation in `model.jl`: the frozen baseline requires `\Delta t \cdot \dot{m}_{g,k}`, but the current code still minimizes `P_i \cdot \mathrm{SFOC}_i` without the `\Delta t` factor.
+- Do not treat the next baseline run as thesis-equivalent until that objective-scaling mismatch is fixed and re-verified.
+
 ## Purpose
 
 This document defines a step-by-step process for deciding whether this project should:
