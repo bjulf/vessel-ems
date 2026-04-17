@@ -24,7 +24,7 @@ eta_dis = 0.95
 
 [initial_conditions]
 generator_commitment = [0, 0]
-battery_energy_kwh = 470.0
+battery_energy_kwh = 658.0
 
 [[generators]]
 P_max = 385.0
