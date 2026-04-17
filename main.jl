@@ -138,6 +138,22 @@ function load_model_config(config_path)
     )
 end
 
+function battery_energy_metadata(battery)
+    return Dict(
+        "E_cap"    => battery.E_max,
+        "E_min"    => battery.SOC_min * battery.E_max,
+        "E_max"    => battery.SOC_max * battery.E_max,
+        "E_init"   => battery.E_init,
+        "SOC_min"  => battery.SOC_min,
+        "SOC_max"  => battery.SOC_max,
+        "P_ch_max" => battery.P_ch_max,
+        "P_dis_max"=> battery.P_dis_max,
+        "eta_ch"   => battery.eta_ch,
+        "eta_dis"  => battery.eta_dis,
+        "dt"       => battery.dt,
+    )
+end
+
 function main()
     config_arg = isempty(ARGS) ? joinpath("config", "baseline_model.toml") : ARGS[1]
     config_path = resolve_repo_path(config_arg)
@@ -186,17 +202,7 @@ function main()
                 "objective"    => objective_value(model),
                 "solve_time_s" => solve_time(model),
             ),
-            "battery" => Dict(
-                "E_max"       => battery.E_max,
-                "SOC_min"     => battery.SOC_min,
-                "SOC_max"     => battery.SOC_max,
-                "P_ch_max"    => battery.P_ch_max,
-                "P_dis_max"   => battery.P_dis_max,
-                "eta_ch"      => battery.eta_ch,
-                "eta_dis"     => battery.eta_dis,
-                "E_init"      => battery.E_init,
-                "dt"          => battery.dt,
-            ),
+            "battery" => battery_energy_metadata(battery),
             "initial_conditions" => Dict(
                 "generator_commitment" => collect(cfg.initial_commitment),
                 "battery_energy_kwh"   => battery.E_init,

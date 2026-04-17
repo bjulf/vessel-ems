@@ -67,31 +67,31 @@ timestep,load_kw,datetime,module,module_label,scenario
 66,220.46,2026-03-01 16:15,maneuvering,Maneuvering,validation
 67,122.59,2026-03-01 16:30,maneuvering,Maneuvering,validation
 68,190.26,2026-03-01 16:45,maneuvering,Maneuvering,validation
-69,357.62,2026-03-01 17:00,high_transient,High transient,validation
-70,352.45,2026-03-01 17:15,high_transient,High transient,validation
-71,371.63,2026-03-01 17:30,high_transient,High transient,validation
-72,397.16,2026-03-01 17:45,high_transient,High transient,validation
-73,326.76,2026-03-01 18:00,high_transient,High transient,validation
-74,334.26,2026-03-01 18:15,high_transient,High transient,validation
-75,372.95,2026-03-01 18:30,high_transient,High transient,validation
-76,327.39,2026-03-01 18:45,high_transient,High transient,validation
-77,363.66,2026-03-01 19:00,high_transient,High transient,validation
-78,396.68,2026-03-01 19:15,high_transient,High transient,validation
-79,419.23,2026-03-01 19:30,high_transient,High transient,validation
-80,273.18,2026-03-01 19:45,high_transient,High transient,validation
-81,770.0,2026-03-01 20:00,stress_switching,Stress switching,validation
-82,152.86,2026-03-01 20:15,stress_switching,Stress switching,validation
-83,770.0,2026-03-01 20:30,stress_switching,Stress switching,validation
-84,138.14,2026-03-01 20:45,stress_switching,Stress switching,validation
-85,770.0,2026-03-01 21:00,stress_switching,Stress switching,validation
-86,730.06,2026-03-01 21:15,stress_switching,Stress switching,validation
-87,0.0,2026-03-01 21:30,stress_switching,Stress switching,validation
-88,261.85,2026-03-01 21:45,stress_switching,Stress switching,validation
-89,770.0,2026-03-01 22:00,stress_switching,Stress switching,validation
-90,733.07,2026-03-01 22:15,stress_switching,Stress switching,validation
-91,770.0,2026-03-01 22:30,stress_switching,Stress switching,validation
-92,754.9,2026-03-01 22:45,stress_switching,Stress switching,validation
-93,0.0,2026-03-01 23:00,stress_switching,Stress switching,validation
-94,401.3,2026-03-01 23:15,stress_switching,Stress switching,validation
-95,0.0,2026-03-01 23:30,stress_switching,Stress switching,validation
-96,571.93,2026-03-01 23:45,stress_switching,Stress switching,validation
+69,350.0,2026-03-01 17:00,load_transients,Load transients,validation
+70,0.0,2026-03-01 17:15,load_transients,Load transients,validation
+71,350.0,2026-03-01 17:30,load_transients,Load transients,validation
+72,120.0,2026-03-01 17:45,load_transients,Load transients,validation
+73,0.0,2026-03-01 18:00,load_transients,Load transients,validation
+74,300.0,2026-03-01 18:15,load_transients,Load transients,validation
+75,40.0,2026-03-01 18:30,load_transients,Load transients,validation
+76,330.0,2026-03-01 18:45,load_transients,Load transients,validation
+77,357.62,2026-03-01 19:00,high_transient,High transient,validation
+78,352.45,2026-03-01 19:15,high_transient,High transient,validation
+79,371.63,2026-03-01 19:30,high_transient,High transient,validation
+80,397.16,2026-03-01 19:45,high_transient,High transient,validation
+81,326.76,2026-03-01 20:00,high_transient,High transient,validation
+82,334.26,2026-03-01 20:15,high_transient,High transient,validation
+83,372.95,2026-03-01 20:30,high_transient,High transient,validation
+84,327.39,2026-03-01 20:45,high_transient,High transient,validation
+85,363.66,2026-03-01 21:00,high_transient,High transient,validation
+86,396.68,2026-03-01 21:15,high_transient,High transient,validation
+87,419.23,2026-03-01 21:30,high_transient,High transient,validation
+88,273.18,2026-03-01 21:45,high_transient,High transient,validation
+89,0.0,2026-03-01 22:00,severe_load_transients,Severe load transients,validation
+90,152.86,2026-03-01 22:15,severe_load_transients,Severe load transients,validation
+91,0.0,2026-03-01 22:30,severe_load_transients,Severe load transients,validation
+92,770.0,2026-03-01 22:45,severe_load_transients,Severe load transients,validation
+93,0.0,2026-03-01 23:00,severe_load_transients,Severe load transients,validation
+94,730.06,2026-03-01 23:15,severe_load_transients,Severe load transients,validation
+95,770.0,2026-03-01 23:30,severe_load_transients,Severe load transients,validation
+96,261.85,2026-03-01 23:45,severe_load_transients,Severe load transients,validation

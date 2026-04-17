@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -33,9 +34,10 @@ MODULES = {
     "harbor_hotel": {"label": "Harbor / hotel", "color": "#4C78A8", "range_kw": (20.0, 60.0)},
     "aux_work": {"label": "Auxiliary work", "color": "#72B7B2", "range_kw": (60.0, 150.0)},
     "maneuvering": {"label": "Maneuvering", "color": "#F58518", "range_kw": (120.0, 300.0)},
+    "load_transients": {"label": "Load transients", "color": "#9C755F", "range_kw": (0.0, 350.0)},
     "transit": {"label": "Transit", "color": "#54A24B", "range_kw": (140.0, 260.0)},
     "high_transient": {"label": "High transient", "color": "#E45756", "range_kw": (250.0, 450.0)},
-    "stress_switching": {"label": "Stress switching", "color": "#B279A2", "range_kw": (0.0, 770.0)},
+    "severe_load_transients": {"label": "Severe load transients", "color": "#B279A2", "range_kw": (0.0, 770.0)},
 }
 
 
@@ -48,6 +50,7 @@ class Block:
     wave_kw: float = 0.0
     noise_kw: float = 0.0
     pattern: str = "trend"
+    sequence_kw: Optional[tuple[float, ...]] = None
 
 
 VALIDATION_BLOCKS = [
@@ -55,8 +58,23 @@ VALIDATION_BLOCKS = [
     Block("aux_work", 16, 80, 120, wave_kw=0, noise_kw=16.0, pattern="random"),
     Block("transit", 24, 185, 205, wave_kw=8, noise_kw=4.0, pattern="plateau"),
     Block("maneuvering", 16, 150, 260, wave_kw=0, noise_kw=28.0, pattern="random"),
+    Block(
+        "load_transients",
+        8,
+        0,
+        350,
+        pattern="sequence",
+        sequence_kw=(350.0, 0.0, 350.0, 120.0, 0.0, 300.0, 40.0, 330.0),
+    ),
     Block("high_transient", 12, 280, 420, wave_kw=18, noise_kw=14.0, pattern="random"),
-    Block("stress_switching", 16, 0, 770, wave_kw=0, noise_kw=0.0, pattern="chaos"),
+    Block(
+        "severe_load_transients",
+        8,
+        0,
+        770,
+        pattern="sequence",
+        sequence_kw=(0.0, 152.86, 0.0, 770.0, 0.0, 730.06, 770.0, 261.85),
+    ),
 ]
 
 
@@ -64,7 +82,11 @@ def _build_block(block: Block, rng: np.random.Generator) -> np.ndarray:
     module = MODULES[block.module]
     lo, hi = module["range_kw"]
 
-    if block.pattern == "plateau":
+    if block.pattern == "sequence":
+        if block.sequence_kw is None or len(block.sequence_kw) != block.steps:
+            raise ValueError(f"{block.module} sequence must contain exactly {block.steps} values")
+        values = np.array(block.sequence_kw, dtype=float)
+    elif block.pattern == "plateau":
         center = 0.5 * (block.start_kw + block.end_kw)
         phase = np.linspace(0.0, 2.0 * np.pi, block.steps)
         values = center + block.wave_kw * np.sin(phase) + rng.normal(0.0, block.noise_kw, block.steps)
