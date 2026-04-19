@@ -9,7 +9,6 @@ import pandas as pd
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-OUTPUT_DIR = REPO_ROOT / "analysis" / "output" / "verification"
 BASE_FONT = 13
 LABEL_FONT = 15
 
@@ -38,6 +37,12 @@ def resolve_run_dir() -> Path:
     if len(sys.argv) > 1:
         return Path(sys.argv[1]).resolve()
     return Path((REPO_ROOT / ".current_run").read_text(encoding="utf-8").strip())
+
+
+def plots_dir(run_dir: Path) -> Path:
+    path = run_dir / "plots"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def load_params(run_dir: Path) -> dict:
@@ -346,7 +351,7 @@ def build_overview_figure(
         figsize=(16, 10.5),
         sharex=True,
         constrained_layout=True,
-        gridspec_kw={"height_ratios": [2.5, 1.1, 1.5], "hspace": 0.07},
+        gridspec_kw={"height_ratios": [3.3, 0.8, 1.1], "hspace": 0.07},
     )
 
     plot_power_panel(axes[0], wide, dispatch, show_labels=True)
@@ -360,7 +365,7 @@ def build_overview_figure(
     )
     format_hour_axis(axes[2], wide["datetime"], major_hours=2)
 
-    out_path = OUTPUT_DIR / f"{run_dir.name}_verification_overview.png"
+    out_path = plots_dir(run_dir) / "verification_overview.png"
     fig.savefig(out_path, dpi=180, bbox_inches="tight")
     plt.close(fig)
     return out_path
@@ -383,7 +388,7 @@ def build_stress_figure(run_dir: Path, dispatch: pd.DataFrame, wide: pd.DataFram
         figsize=(15.5, 9.5),
         sharex=True,
         constrained_layout=True,
-        gridspec_kw={"height_ratios": [2.2, 1.0, 1.0], "hspace": 0.07},
+        gridspec_kw={"height_ratios": [2.8, 0.8, 0.9], "hspace": 0.07},
     )
 
     plot_power_panel(axes[0], subset, dispatch_subset, show_labels=False)
@@ -391,7 +396,7 @@ def build_stress_figure(run_dir: Path, dispatch: pd.DataFrame, wide: pd.DataFram
     plot_residual_panel(axes[2], subset)
     format_hour_axis(axes[2], subset["datetime"], major_hours=1)
 
-    out_path = OUTPUT_DIR / f"{run_dir.name}_verification_stress_window.png"
+    out_path = plots_dir(run_dir) / "verification_stress_window.png"
     fig.savefig(out_path, dpi=180, bbox_inches="tight")
     plt.close(fig)
     return out_path
@@ -406,7 +411,6 @@ def main() -> None:
     profile = load_profile(profile_path)
     wide = merge_profile_labels(wide, profile)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     overview_path = build_overview_figure(run_dir, dispatch, wide, params)
     stress_path = build_stress_figure(run_dir, dispatch, wide)
 

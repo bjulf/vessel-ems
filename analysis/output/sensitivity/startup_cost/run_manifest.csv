@@ -1,0 +1,6 @@
+startup_cost_g_per_start,config_path,run_dir
+350,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\generated_configs\startup_cost_350g.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174421_baseline_model_cstart_350g
+500,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\generated_configs\startup_cost_500g.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174436_baseline_model_cstart_500g
+700,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\generated_configs\startup_cost_700g.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174525_baseline_model_cstart_700g
+1000,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\generated_configs\startup_cost_1000g.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174543_baseline_model_cstart_1000g
+1500,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\generated_configs\startup_cost_1500g.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174557_baseline_model_cstart_1500g

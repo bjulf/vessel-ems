@@ -1,0 +1,38 @@
+Timing summary for C:\Users\bulve\OneDrive\master\model\config\baseline_model.toml
+
+Timed repeats: 5
+Warmup runs: 1
+Run label: baseline_model
+Load profile: C:\Users\bulve\OneDrive\master\model\data\synthetic_profiles\validation_profile.csv
+Timesteps: 96
+Timestep length: 15 min
+Initial battery energy: 658.0 kWh
+
+Solver time [s]:
+  median=0.612, mean=0.616, min=0.533, max=0.675, stdev=0.060
+Wall-clock time [s]:
+  median=14.036, mean=14.232, min=12.662, max=15.742, stdev=1.261
+
+Objective value [g fuel]: 898033.615
+Total fuel [kg]: 894.884
+Min SOC [%]: 50.210
+Final exported SOC [%]: 69.340
+Terminal SOC [%]: 70.000
+Total starts: 9
+Total stops: 8
+Simultaneous charge/discharge steps: 0
+Status: OPTIMAL
+
+Constraint residual checks:
+  Primal feasibility tolerance: 1.0e-07
+  Max power balance residual [kW]: 1.421e-14 (within tolerance: True)
+  Max battery energy dynamic residual [kWh]: 1.137e-13 (within tolerance: True)
+  Initial battery energy residual [kWh]: 0.000e+00
+
+Stability across timed repeats:
+  objective constant: True
+  total fuel constant: True
+  terminal SOC constant: True
+  starts constant: True
+
+CSV: C:\Users\bulve\OneDrive\master\model\analysis\output\timing\baseline_model_timing_runs.csv

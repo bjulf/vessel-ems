@@ -1,0 +1,37 @@
+[run]
+label = "baseline_model_cstart_400g"
+description = "Frozen thesis baseline configuration | startup-cost sensitivity case: 400 g/start"
+show_solver_log = false
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+path = "data/synthetic_profiles/validation_profile.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.3
+SOC_max = 0.9
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 658.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 400.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 400.0

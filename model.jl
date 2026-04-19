@@ -22,8 +22,8 @@ function build_model(gensets, load, battery, initial_commitment)
     # ── Initial energy state ───────────────────────────────────────────────
     @constraint(model, E[1] == battery.E_init)
 
-    # ── Terminal SOC constraint: don't drain below reference at end of horizon
-    @constraint(model, E[length(T)+1] >= battery.E_init)
+    # ── Terminal SOC constraint: don't drain below the configured terminal target
+    @constraint(model, E[length(T)+1] >= battery.E_terminal_min)
 
     for t in T
         # Power balance: generators + battery discharge − battery charge = load

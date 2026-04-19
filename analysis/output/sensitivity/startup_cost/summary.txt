@@ -1,0 +1,16 @@
+Startup-cost sensitivity summary for config\baseline_model.toml
+
+Cases [g/start]: 350, 500, 700, 1000, 1500
+
+Fuel range [kg]: 859.590 to 861.848
+Starts range: 2 to 6
+Time with 2 gensets online [h]: 0.75 to 1.00
+
+Lowest-fuel case: 350 g/start with 859.590 kg fuel, 6 starts, and 0.75 h with 2 gensets online
+Fewest-starts case: 700 g/start with 2 starts
+Most-starts case: 350 g/start with 6 starts
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\overview.png
+Tradeoff plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\startup_cost\fuel_vs_starts.png

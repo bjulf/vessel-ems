@@ -4,11 +4,14 @@ This folder is the curated shortlist of figure files currently considered thesis
 
 The rest of `analysis/` remains the working archive and reproducibility trail.
 
+A packaged snapshot for report assembly is also available under [Thesis_ready/](./Thesis_ready/).
+
 ## Current Figure Candidates
 
 ### Methods
 
 - [methods/operational_load_validation.png](./methods/operational_load_validation.png)
+- [methods/validation_profile_bars.png](./methods/validation_profile_bars.png)
 
 Supporting note:
 
@@ -17,14 +20,19 @@ Supporting note:
 Intended use:
 
 - general operational data validation or operational load validation in the Methods chapter
+- synthetic validation-case design figure showing the staged 24 h load profile used for internal verification
 
 ### Results
 
 - [results/sfoc_regime_thesis_scatter.png](./results/sfoc_regime_thesis_scatter.png)
+- [results/synthetic_verification_overview_soc70.png](./results/synthetic_verification_overview_soc70.png)
+- [results/synthetic_verification_overview_cstart700.png](./results/synthetic_verification_overview_cstart700.png)
 
 Intended use:
 
 - Results subsection for telemetry-based assessment of generator operating regimes and SFOC behavior
+- Results subsection for synthetic-case verification of dispatch behavior with 70% initial SOC
+- Results subsection or sensitivity appendix figure for the synthetic validation case with `700 g/start` startup penalty
 
 ## Related Handoffs
 

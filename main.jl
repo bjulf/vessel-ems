@@ -2,7 +2,11 @@ using JuMP, HiGHS, Printf, Dates, TOML
 
 include("model.jl")
 
+const MOI = JuMP.MOI
+
 format_num(x) = @sprintf("%.6f", isapprox(x, 0.0; atol=1e-9) ? 0.0 : x)
+
+solver_option(model, name) = Float64(MOI.get(backend(model), MOI.RawOptimizerAttribute(name)))
 
 function write_results_csv(path, load, datetimes, gensets, battery, u, y, Pg, SFOC, mdot, lambda, P_ch, P_dis, E)
     max_breakpoints = maximum(length(g.SFOC) for g in gensets)
@@ -122,6 +126,14 @@ function load_model_config(config_path)
         eta_ch    = Float64(required_key(battery_cfg, "eta_ch", "[battery]")),
         eta_dis   = Float64(required_key(battery_cfg, "eta_dis", "[battery]")),
         E_init    = Float64(required_key(initial_cfg, "battery_energy_kwh", "[initial_conditions]")),
+        E_terminal_min = begin
+            terminal_cfg = get(raw, "terminal_conditions", Dict{String, Any}())
+            if haskey(terminal_cfg, "battery_energy_min_kwh")
+                Float64(terminal_cfg["battery_energy_min_kwh"])
+            else
+                Float64(required_key(initial_cfg, "battery_energy_kwh", "[initial_conditions]"))
+            end
+        end,
         dt        = dt,
     )
 
@@ -144,13 +156,89 @@ function battery_energy_metadata(battery)
         "E_min"    => battery.SOC_min * battery.E_max,
         "E_max"    => battery.SOC_max * battery.E_max,
         "E_init"   => battery.E_init,
+        "E_terminal_min" => battery.E_terminal_min,
         "SOC_min"  => battery.SOC_min,
         "SOC_max"  => battery.SOC_max,
+        "SOC_terminal_min" => battery.E_terminal_min / battery.E_max,
         "P_ch_max" => battery.P_ch_max,
         "P_dis_max"=> battery.P_dis_max,
         "eta_ch"   => battery.eta_ch,
         "eta_dis"  => battery.eta_dis,
         "dt"       => battery.dt,
+    )
+end
+
+function validation_metadata(model, load, datetimes, battery, Pg, P_ch, P_dis, E)
+    T = eachindex(load)
+    G = axes(Pg, 1)
+
+    primal_tol = solver_option(model, "primal_feasibility_tolerance")
+    mip_tol = solver_option(model, "mip_feasibility_tolerance")
+
+    max_power_abs_residual = -1.0
+    max_power_residual = 0.0
+    max_power_step = first(T)
+    for t in T
+        residual = sum(value(Pg[g, t]) for g in G) + value(P_dis[t]) - value(P_ch[t]) - load[t]
+        abs_residual = abs(residual)
+        if abs_residual > max_power_abs_residual
+            max_power_abs_residual = abs_residual
+            max_power_residual = residual
+            max_power_step = t
+        end
+    end
+
+    initial_energy_residual = value(E[first(T)]) - battery.E_init
+    max_energy_abs_residual = -1.0
+    max_energy_residual = 0.0
+    max_energy_step = first(T)
+    for t in T
+        residual = value(E[t + 1]) - (
+            value(E[t]) + battery.dt * (
+                battery.eta_ch * value(P_ch[t]) -
+                (1.0 / battery.eta_dis) * value(P_dis[t])
+            )
+        )
+        abs_residual = abs(residual)
+        if abs_residual > max_energy_abs_residual
+            max_energy_abs_residual = abs_residual
+            max_energy_residual = residual
+            max_energy_step = t
+        end
+    end
+
+    terminal_energy = value(E[length(load) + 1])
+    terminal_soc = terminal_energy / battery.E_max
+
+    return Dict(
+        "solver_tolerances" => Dict(
+            "primal_feasibility" => primal_tol,
+            "mip_feasibility" => mip_tol,
+        ),
+        "power_balance" => Dict(
+            "max_abs_residual_kw" => max_power_abs_residual,
+            "max_residual_kw" => max_power_residual,
+            "max_residual_timestep" => max_power_step,
+            "max_residual_datetime" => datetimes[max_power_step],
+            "within_primal_feasibility_tolerance" => max_power_abs_residual <= primal_tol,
+        ),
+        "battery_energy" => Dict(
+            "initial_residual_kwh" => initial_energy_residual,
+            "max_abs_dynamic_residual_kwh" => max_energy_abs_residual,
+            "max_dynamic_residual_kwh" => max_energy_residual,
+            "max_dynamic_residual_from_timestep" => max_energy_step,
+            "max_dynamic_residual_from_datetime" => datetimes[max_energy_step],
+            "max_dynamic_residual_to_timestep" => max_energy_step + 1,
+            "terminal_energy_kwh" => terminal_energy,
+            "terminal_soc_pct" => terminal_soc * 100.0,
+            "terminal_target_min_kwh" => battery.E_terminal_min,
+            "terminal_target_min_soc_pct" => battery.E_terminal_min / battery.E_max * 100.0,
+            "terminal_constraint_residual_kwh" => terminal_energy - battery.E_terminal_min,
+            "within_primal_feasibility_tolerance" => (
+                abs(initial_energy_residual) <= primal_tol &&
+                max_energy_abs_residual <= primal_tol
+            ),
+        ),
     )
 end
 
@@ -188,6 +276,8 @@ function main()
         run_dir = joinpath(@__DIR__, "runs", "$(timestamp)_$(run_label)")
         mkpath(run_dir)
 
+        validation = validation_metadata(model, load, datetimes, battery, Pg, P_ch, P_dis, E)
+
         params_dict = Dict(
             "run" => Dict(
                 "date"        => Dates.format(now(), "yyyy-mm-dd"),
@@ -202,10 +292,14 @@ function main()
                 "objective"    => objective_value(model),
                 "solve_time_s" => solve_time(model),
             ),
+            "validation" => validation,
             "battery" => battery_energy_metadata(battery),
             "initial_conditions" => Dict(
                 "generator_commitment" => collect(cfg.initial_commitment),
                 "battery_energy_kwh"   => battery.E_init,
+            ),
+            "terminal_conditions" => Dict(
+                "battery_energy_min_kwh" => battery.E_terminal_min,
             ),
             "load_profile" => Dict(
                 "source_file"     => load_profile_path,

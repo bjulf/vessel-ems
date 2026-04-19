@@ -1,0 +1,5 @@
+terminal_reserve_pct,config_path,run_dir
+30,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\generated_configs\terminal_reserve_30pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174619_baseline_model_terminal_30pct
+40,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\generated_configs\terminal_reserve_40pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174634_baseline_model_terminal_40pct
+50,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\generated_configs\terminal_reserve_50pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174650_baseline_model_terminal_50pct
+60,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\generated_configs\terminal_reserve_60pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174706_baseline_model_terminal_60pct

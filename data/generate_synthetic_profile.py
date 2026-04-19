@@ -146,6 +146,57 @@ def _annotate_module_spans(ax: plt.Axes, times: pd.Series, df: pd.DataFrame, y: 
         )
 
 
+def _label_y_scale(module_name: str) -> float:
+    return {
+        "harbor_hotel": 0.98,
+        "aux_work": 0.98,
+        "transit": 0.98,
+        "maneuvering": 0.98,
+        "load_transients": 0.98,
+        "high_transient": 0.86,
+        "severe_load_transients": 0.98,
+    }.get(module_name, 0.98)
+
+
+def _annotate_module_spans_elapsed(ax: plt.Axes, df: pd.DataFrame, y: float) -> None:
+    step_hours = STEP_MINUTES / 60.0
+    for start_idx, end_idx, module_name in _module_spans(df):
+        start = start_idx * step_hours
+        end = (end_idx + 1) * step_hours
+        midpoint = 0.5 * (start + end)
+        ax.text(
+            midpoint,
+            y * _label_y_scale(module_name),
+            MODULES[module_name]["label"],
+            ha="center",
+            va="center",
+            fontsize=16,
+            color="#0f172a",
+            bbox={
+                "boxstyle": "round,pad=0.32",
+                "facecolor": "white",
+                "edgecolor": MODULES[module_name]["color"],
+                "linewidth": 1.2,
+                "alpha": 0.94,
+            },
+            zorder=5,
+        )
+
+
+def _draw_module_separators_elapsed(ax: plt.Axes, df: pd.DataFrame) -> None:
+    step_hours = STEP_MINUTES / 60.0
+    for start_idx, _, _ in list(_module_spans(df))[1:]:
+        ax.axvline(start_idx * step_hours, color="#64748b", lw=1.0, ls="--", alpha=0.7, zorder=1)
+
+
+def _draw_module_background_elapsed(ax: plt.Axes, df: pd.DataFrame) -> None:
+    step_hours = STEP_MINUTES / 60.0
+    for start_idx, end_idx, module_name in _module_spans(df):
+        start = start_idx * step_hours
+        end = (end_idx + 1) * step_hours
+        ax.axvspan(start, end, color=MODULES[module_name]["color"], alpha=0.10, linewidth=0, zorder=0)
+
+
 def generate_validation_profile() -> pd.DataFrame:
     total_steps = sum(block.steps for block in VALIDATION_BLOCKS)
     if total_steps != STEPS_PER_DAY:
@@ -214,32 +265,32 @@ def plot_validation_profile(df: pd.DataFrame, path: Path) -> None:
 
 
 def plot_validation_bars(df: pd.DataFrame, path: Path) -> None:
-    times = pd.to_datetime(df["datetime"])
-    step_width_days = pd.Timedelta(minutes=STEP_MINUTES) / pd.Timedelta(days=1)
+    step_hours = STEP_MINUTES / 60.0
+    elapsed_hours = np.arange(len(df)) * step_hours
     colors = [MODULES[module]["color"] for module in df["module"]]
 
     fig, ax = plt.subplots(figsize=(16, 6.2))
+    _draw_module_background_elapsed(ax, df)
     ax.bar(
-        times,
+        elapsed_hours,
         df["load_kw"],
-        width=step_width_days,
+        width=step_hours,
         align="edge",
         color=colors,
         edgecolor="white",
-        linewidth=0.5,
+        linewidth=0.45,
     )
 
     y_top = max(560, df["load_kw"].max() * 1.18)
-    _draw_module_separators(ax, times, df)
-    _annotate_module_spans(ax, times, df, y_top * 0.94)
+    _draw_module_separators_elapsed(ax, df)
+    _annotate_module_spans_elapsed(ax, df, y_top * 0.98)
 
-    ax.set_title("Synthetic Validation Load Profile Bars", fontsize=22, pad=16)
-    ax.set_ylabel("Load [kW]", fontsize=18)
-    ax.set_xlabel("")
+    ax.set_ylabel("Load [kW]", fontsize=20)
+    ax.set_xlabel("Hour", fontsize=20)
     ax.set_ylim(0, y_top)
-    ax.xaxis.set_major_locator(mdates.HourLocator(interval=3))
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
-    ax.tick_params(axis="both", labelsize=16)
+    ax.set_xlim(0, len(df) * step_hours)
+    ax.set_xticks(np.arange(0, 25, 2))
+    ax.tick_params(axis="both", labelsize=18)
     ax.grid(axis="y", alpha=0.25)
 
     fig.tight_layout()

@@ -1,0 +1,3 @@
+startup_cost_g_per_start,run_dir,objective_kg_equivalent,total_fuel_kg,startup_penalty_kg_equivalent,solve_time_s,total_starts,total_stops,gen_1_starts,gen_1_stops,gen_2_starts,gen_2_stops,min_soc_pct,final_soc_pct,terminal_soc_pct,terminal_e_kwh
+350,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_170506_baseline_model_cstart_350g,861.69029126875,859.59029126875,2.1,5.976148843765259,6,5,4,3,2,2,44.65,50.0,50.0,470.0
+700,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_170523_baseline_model_cstart_700g,863.2483884141265,861.8483884142499,1.4,2.9595770835876465,2,1,1,0,1,1,27.54,49.34,50.0,470.0

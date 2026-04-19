@@ -1,0 +1,7 @@
+phase,run_index,run_dir,objective_g,solver_time_s,wall_clock_s,solve_status,e_init_kwh,timesteps,dt_minutes,total_fuel_kg,min_soc_pct,final_soc_pct,terminal_soc_pct,terminal_e_kwh,total_starts,total_stops,simultaneous_charge_discharge_steps,gen_1_starts,gen_1_stops,gen_2_starts,gen_2_stops
+warmup,1,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160148_baseline_model,863248.3884141265,2.733570098876953,16.15400050000244,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1
+timed,1,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160205_baseline_model,863248.3884141265,3.0940728187561035,16.304926000000705,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1
+timed,2,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160221_baseline_model,863248.3884141265,2.8394887447357178,16.533921599999303,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1
+timed,3,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160237_baseline_model,863248.3884141265,2.705491781234741,15.877031799998804,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1
+timed,4,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160253_baseline_model,863248.3884141265,2.7999258041381836,15.542501900003117,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1
+timed,5,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_160309_baseline_model,863248.3884141265,2.7429158687591553,15.871771699999954,OPTIMAL,658.0,96,15,861.8483884142499,27.54,49.34,50.0,470.0,2,1,0,1,0,1,1

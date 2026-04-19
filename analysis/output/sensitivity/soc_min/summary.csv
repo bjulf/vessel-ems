@@ -1,0 +1,4 @@
+soc_min_pct,config_path,run_dir,total_fuel_kg,total_starts,time_two_gensets_online_h,min_soc_pct,terminal_soc_pct,battery_throughput_kwh,solve_time_s
+20,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\soc_min\generated_configs\soc_min_20pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174824_baseline_model_socmin_20pct,861.8483884142499,2,1.0,27.54,50.0,1191.59956375,4.362237930297852
+30,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\soc_min\generated_configs\soc_min_30pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174846_baseline_model_socmin_30pct,861.18701836575,3,1.0,35.48,50.0,1122.5878255,4.737027883529663
+40,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\soc_min\generated_configs\soc_min_40pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174915_baseline_model_socmin_40pct,860.63903325475,4,1.0,41.88,50.0,1065.40742375,12.07348918914795

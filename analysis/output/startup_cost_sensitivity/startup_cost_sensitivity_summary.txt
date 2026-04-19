@@ -1,0 +1,15 @@
+Startup-cost sensitivity summary for config\baseline_model.toml
+
+Cases [g/start]: 350, 700
+
+Fuel-only range [kg]: 859.590 to 861.848
+Objective range [kg equivalent]: 861.690 to 863.248
+Total starts range: 2 to 6
+
+Lowest fuel-only case: 350 g/start with 859.590 kg fuel and 6 starts
+Lowest objective case: 350 g/start with 861.690 kg equivalent objective and 6 starts
+Fewest starts case: 700 g/start with 2 starts
+Most starts case: 350 g/start with 6 starts
+
+CSV: C:\Users\bulve\OneDrive\master\model\analysis\output\startup_cost_sensitivity\startup_cost_sensitivity_summary.csv
+Plot: C:\Users\bulve\OneDrive\master\model\analysis\output\startup_cost_sensitivity\startup_cost_sensitivity_overview.png

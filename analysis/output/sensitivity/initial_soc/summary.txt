@@ -1,0 +1,11 @@
+Initial-SOC sensitivity summary for config\baseline_model.toml
+
+Cases [%]: 50, 60, 70, 80
+
+Fuel range [kg]: 843.593 to 897.177
+Starts range: 2 to 3
+Battery throughput range [kWh]: 1094.6 to 1191.6
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\overview.png

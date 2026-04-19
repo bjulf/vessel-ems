@@ -1,0 +1,5 @@
+initial_soc_pct,config_path,run_dir
+50,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\generated_configs\initial_soc_50pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_174946_baseline_model_initialsoc_50pct
+60,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\generated_configs\initial_soc_60pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_175003_baseline_model_initialsoc_60pct
+70,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\generated_configs\initial_soc_70pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_175019_baseline_model_initialsoc_70pct
+80,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\initial_soc\generated_configs\initial_soc_80pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-19_175035_baseline_model_initialsoc_80pct

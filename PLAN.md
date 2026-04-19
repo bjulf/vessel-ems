@@ -16,9 +16,9 @@ Before any further studies, sensitivity analysis, or new result generation in th
 - The baseline run is now configured through `config/baseline_model.toml`.
 - The baseline config now points to the synthetic report-side validation profile in `data/synthetic_profiles/validation_profile.csv` (`24 h`, `15 min`, `K = 96`).
 - Baseline parameter values for generator limits, breakpoint powers, startup cost, SOC bounds, and synthetic initial conditions are now expressed in the config file rather than hardcoded in `main.jl`.
-- The implementation is still **not** identical to the frozen thesis baseline yet.
-- The main remaining blocker is the objective implementation in `model.jl`: the frozen baseline requires `\Delta t \cdot \dot{m}_{g,k}`, but the current code still minimizes `P_i \cdot \mathrm{SFOC}_i` without the `\Delta t` factor.
-- Do not treat the next baseline run as thesis-equivalent until that objective-scaling mismatch is fixed and re-verified.
+- The core Julia implementation now matches the report-aligned baseline formulation, including the `\Delta t \cdot \dot{m}_{g,k}` fuel term in the objective.
+- The main remaining alignment risk is helper drift in report and sensitivity config generation. Those paths must preserve the same baseline parameters and `[terminal_conditions]` as `config/baseline_model.toml`.
+- Treat `config/baseline_model.toml` as the local implementation source of truth when launching new baseline and sensitivity runs.
 
 ## Purpose
 

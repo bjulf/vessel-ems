@@ -1,0 +1,11 @@
+Terminal-reserve sensitivity summary for config\baseline_model.toml
+
+Cases [%]: 30, 40, 50, 60
+
+Fuel range [kg]: 824.866 to 879.939
+Starts range: 2 to 3
+Battery throughput range [kWh]: 1116.4 to 1191.6
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\terminal_reserve\overview.png

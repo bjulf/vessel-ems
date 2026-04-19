@@ -1,0 +1,46 @@
+# Frozen thesis baseline model parameters.
+# Variant: 70 percent initial battery SOC, 50 percent terminal minimum SOC,
+# 30 percent battery minimum SOC bound, 80 percent battery maximum SOC bound,
+# and 700 g/start generator startup cost.
+
+[run]
+label = "baseline_model_soc70_terminal50_socmin30_socmax80_cstart700g"
+description = "Frozen thesis baseline configuration with 70 percent initial battery SOC, 50 percent terminal minimum SOC, 30 percent battery minimum SOC bound, 80 percent battery maximum SOC bound, and 700 g/start generator startup cost"
+show_solver_log = true
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+# Synthetic 24-hour / 15-minute validation profile used in the report baseline.
+path = "data/synthetic_profiles/validation_profile.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.30
+SOC_max = 0.80
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 658.0
+
+[terminal_conditions]
+battery_energy_min_kwh = 470.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 700.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 700.0

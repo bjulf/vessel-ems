@@ -66,6 +66,7 @@ The main workflow is:
 When generating plots that are likely to be reused in the thesis or reports:
 
 - Optimize for readability after export, not only for interactive viewing
+- For new run-local plots in `runs/<run_dir>/plots/`, use the standard verification format produced by `analysis/plot_verification_case.py`, saving `verification_overview.png` and, when the script supports it, `verification_stress_window.png`; do not default to the older `plot.py` layout unless explicitly requested
 - Use larger-than-default text for titles, axis labels, tick labels, and in-plot annotations
 - Prefer direct labels inside the figure when they are clearer than a separate legend
 - Avoid redundant legends when the same categories are already clearly labeled in the plot
@@ -97,7 +98,8 @@ Use the smallest relevant validation for the change:
   - Check solver status and inspect the newly created directory in `runs/`
   - Verify `params.toml` and `dispatch_results.csv` reflect the intended change
 - Plot/report changes:
-  - Run `python plot.py <run_dir>`
+  - For standard run-local verification plots, run `python analysis/plot_verification_case.py <run_dir>`
+  - Use `python plot.py <run_dir>` only when the task explicitly asks for the legacy/general dispatch figure set
   - Run `quarto render report.qmd` or render with `RUN_DIR` set to a specific run
 
 ## Environment notes
