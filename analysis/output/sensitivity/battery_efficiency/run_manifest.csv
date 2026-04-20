@@ -1,0 +1,4 @@
+battery_efficiency,config_path,run_dir
+0.92,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\battery_efficiency\generated_configs\battery_efficiency_92pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-20_151702_baseline_model_eta_92pct
+0.95,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\battery_efficiency\generated_configs\battery_efficiency_95pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-20_151730_baseline_model_eta_95pct
+0.98,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity\battery_efficiency\generated_configs\battery_efficiency_98pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-20_151756_baseline_model_eta_98pct

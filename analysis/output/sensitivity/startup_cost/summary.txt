@@ -1,6 +1,6 @@
 Startup-cost sensitivity summary for config\baseline_model.toml
 
-Cases [g/start]: 350, 500, 700, 1000, 1500
+Cases [g/start]: 350, 500, 550, 600, 650, 700, 1000, 1500
 
 Fuel range [kg]: 859.590 to 861.848
 Starts range: 2 to 6

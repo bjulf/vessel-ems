@@ -19,7 +19,7 @@ from sensitivity_common import (
 
 
 OUTPUT_DIR, GENERATED_CONFIGS_DIR = create_output_dirs("startup_cost")
-DEFAULT_STARTUP_COSTS_G = [350, 500, 700, 1000, 1500]
+DEFAULT_STARTUP_COSTS_G = [350, 500, 550, 600, 650, 700, 1000, 1500]
 
 
 def parse_args() -> argparse.Namespace:
