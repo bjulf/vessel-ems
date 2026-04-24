@@ -1,0 +1,16 @@
+Startup-cost sensitivity summary for config\baseline_model_no_terminal_soc.toml
+
+Cases [g/start]: 350, 500, 550, 600, 650, 700, 1000, 1500
+
+Fuel range [kg]: 804.509 to 807.828
+Starts range: 2 to 8
+Time with 2 gensets online [h]: 0.50 to 0.75
+
+Lowest-fuel case: 350 g/start with 804.509 kg fuel, 8 starts, and 0.75 h with 2 gensets online
+Fewest-starts case: 1000 g/start with 2 starts
+Most-starts case: 350 g/start with 8 starts
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_no_terminal_soc\startup_cost\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_no_terminal_soc\startup_cost\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_no_terminal_soc\startup_cost\overview.png
+Tradeoff plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_no_terminal_soc\startup_cost\fuel_vs_starts.png

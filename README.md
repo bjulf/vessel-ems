@@ -12,7 +12,12 @@ The model minimises total fuel consumption across a fleet of generators over a g
 |---|---|
 | `model.jl` | JuMP optimisation model (variables, constraints, objective) |
 | `main.jl` | Entry point — reads the active load profile, solves, writes CSV |
+| `model_baseline_no_terminal_soc.jl` | Clean baseline variant with the terminal SOC requirement removed |
+| `main_baseline_no_terminal_soc.jl` | Entry point for the clean no-terminal-SOC baseline variant |
+| `experimental_models/` | Temporary or exploratory model/entry-point variants kept out of the main top-level layout |
+| `rule_based.jl` | Separate rule-based supervisory EMS entry point for baseline comparison runs |
 | `config/baseline_model.toml` | Baseline run parameters and default model input selection |
+| `config/baseline_model_no_terminal_soc.toml` | Clean no-terminal-SOC baseline-variant parameters |
 | `types.jl` | Type definitions (reserved for future use) |
 | `data/generate_synthetic_profile.py` | Generates synthetic 24 h / 15 min load scenarios and plots |
 | `plot.py` | Python plotting script for dispatch results |
@@ -47,6 +52,14 @@ julia --project=. main.jl config/baseline_model.toml
 ```
 
 This produces a run directory in `runs/` with `dispatch_results.csv` and `params.toml`.
+
+### Run the rule-based EMS baseline
+
+```bash
+julia --project=. rule_based.jl config/baseline_model.toml
+```
+
+This reuses the same baseline configuration and load profile, writes a separate run directory in `runs/`, and updates `.current_run` to the new rule-based run.
 
 ### Plot results
 

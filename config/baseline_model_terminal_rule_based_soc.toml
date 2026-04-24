@@ -1,0 +1,42 @@
+# Synthetic baseline case with terminal SOC matched to the latest rule-based baseline run.
+
+[run]
+label = "baseline_model_terminal_rule_based_soc"
+description = "Synthetic baseline MILP with terminal minimum battery energy matched to the latest rule-based baseline run terminal SOC"
+show_solver_log = true
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+path = "data/synthetic_profiles/validation_profile.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.20
+SOC_max = 0.80
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 658.0
+
+[terminal_conditions]
+battery_energy_min_kwh = 569.0363421052631
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 700.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 700.0

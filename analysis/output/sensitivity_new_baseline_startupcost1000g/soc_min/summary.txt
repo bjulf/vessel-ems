@@ -1,0 +1,11 @@
+Minimum-SOC sensitivity summary for config\baseline_model_no_terminal_soc_startup1000g.toml
+
+Cases [%]: 20, 30, 40
+
+Fuel range [kg]: 807.828 to 843.820
+Starts range: 2 to 3
+Battery throughput range [kWh]: 1150.9 to 1203.9
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\overview.png

@@ -692,6 +692,55 @@ Exit criterion:
 
 - a sensitivity table and a short discussion of result robustness.
 
+## Phase 15: Computational Scaling Discussion
+
+If the thesis discusses optimization performance, do not use `FLOPs` as the main metric. For this repository, the more defensible discussion is:
+
+- how the model size grows,
+- how many variables are binary versus continuous,
+- how many constraints are introduced,
+- how solve time changes empirically as timestep count changes.
+
+For the current JuMP model in [model.jl](C:/Users/bulve/OneDrive/master/model/model.jl), use the following notation:
+
+- `T`: number of timesteps,
+- `G`: number of generators,
+- `K`: number of SFOC breakpoints per generator.
+
+At a high level:
+
+- generator commitment binaries scale as `O(T * G)`,
+- the battery mode binary scales as `O(T)`,
+- continuous dispatch and state variables scale roughly linearly in `T` for fixed hardware,
+- the breakpoint interpolation variables `lambda[g,t,i]` scale as `O(T * G * K)` and are the dominant model-size term when `K` is fixed but nontrivial,
+- per-timestep constraints also scale approximately linearly in `T` for fixed `G` and `K`.
+
+This means the model formulation size grows predictably, but the MILP solve time does not. The thesis should distinguish clearly between:
+
+- `model-size scaling`: suitable for `Big-O` discussion,
+- `solver runtime scaling`: not well described by a simple practical `Big-O` law.
+
+Recommended wording:
+
+- model construction size grows approximately linearly with the number of timesteps for a fixed generator set and a fixed number of piecewise-linear breakpoints,
+- worst-case MILP solve complexity grows combinatorially with the binary decision structure,
+- actual runtime should therefore be supported by empirical timing results rather than by asymptotic notation alone.
+
+Recommended evidence to report:
+
+- total variable count,
+- binary variable count,
+- continuous variable count,
+- total constraint count,
+- wall-clock solve time,
+- and, if available from the solver, node count, iteration count, and final optimality gap.
+
+If timestep-sensitivity studies are included, present the scaling discussion as:
+
+- `model size versus timestep resolution`,
+- `runtime versus timestep resolution`,
+- and, if relevant, `runtime versus horizon length`.
+
 ## What the Thesis Report Must Contain
 
 The report should justify the SFOC source, not just present the final curve.
@@ -708,7 +757,8 @@ The report should justify the SFOC source, not just present the final curve.
 8. Validation and uncertainty assessment.
 9. Comparison against OEM information.
 10. Final decision on curve source.
-11. Limitations and implications for optimization results.
+11. Computational scaling and solve-time discussion.
+12. Limitations and implications for optimization results.
 
 ## Tables the Report Should Include
 
@@ -720,6 +770,7 @@ The report should justify the SFOC source, not just present the final curve.
 - filtering rules,
 - validation metrics,
 - telemetry versus OEM comparison,
+- model size and runtime summary by case,
 - dispatch sensitivity results.
 
 If confidential supplier material is used, the report should also include:

@@ -1,0 +1,4 @@
+battery_efficiency,config_path,run_dir
+0.92,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\generated_configs\battery_efficiency_92pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_134943_baseline_model_no_terminal_soc_cstart_1000g_eta_92pct
+0.95,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\generated_configs\battery_efficiency_95pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_135000_baseline_model_no_terminal_soc_cstart_1000g_eta_95pct
+0.98,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\generated_configs\battery_efficiency_98pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_135020_baseline_model_no_terminal_soc_cstart_1000g_eta_98pct

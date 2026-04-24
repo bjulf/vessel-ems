@@ -1,0 +1,12 @@
+Battery-efficiency sensitivity summary for config\baseline_model_no_terminal_soc_startup1000g.toml
+
+Cases [-]: 0.92, 0.95, 0.98
+
+Fuel range [kg]: 801.158 to 813.048
+Starts range: 1 to 4
+Minimum-SOC range [%]: 20.00 to 20.00
+Battery throughput range [kWh]: 1064.1 to 1475.6
+
+Manifest: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\run_manifest.csv
+Summary: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\summary.csv
+Overview plot: C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\battery_efficiency\overview.png

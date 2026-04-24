@@ -13,12 +13,12 @@ from sensitivity_common import (
     create_output_dirs,
     resolve_repo_path,
     run_case,
+    sensitivity_output_root,
     write_config,
     write_csv,
 )
 
 
-OUTPUT_DIR, GENERATED_CONFIGS_DIR = create_output_dirs("terminal_reserve")
 DEFAULT_TERMINAL_RESERVES_PCT = [30, 40, 50, 60]
 
 
@@ -55,7 +55,7 @@ def build_case_config(base_config: dict, terminal_reserve_pct: float) -> dict:
     return case_config
 
 
-def write_summary_text(rows: list[dict[str, object]], config_path: Path, path: Path) -> None:
+def write_summary_text(rows: list[dict[str, object]], config_path: Path, output_dir: Path, path: Path) -> None:
     fuel_values = [float(row["total_fuel_kg"]) for row in rows]
     start_values = [int(row["total_starts"]) for row in rows]
     throughput_values = [float(row["battery_throughput_kwh"]) for row in rows]
@@ -69,9 +69,9 @@ def write_summary_text(rows: list[dict[str, object]], config_path: Path, path: P
         f"Starts range: {min(start_values)} to {max(start_values)}",
         f"Battery throughput range [kWh]: {min(throughput_values):.1f} to {max(throughput_values):.1f}",
         "",
-        f"Manifest: {OUTPUT_DIR / 'run_manifest.csv'}",
-        f"Summary: {OUTPUT_DIR / 'summary.csv'}",
-        f"Overview plot: {OUTPUT_DIR / 'overview.png'}",
+        f"Manifest: {output_dir / 'run_manifest.csv'}",
+        f"Summary: {output_dir / 'summary.csv'}",
+        f"Overview plot: {output_dir / 'overview.png'}",
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -117,6 +117,7 @@ def main() -> None:
 
     with open(config_path, "rb") as fh:
         base_config = tomllib.load(fh)
+    output_dir, generated_configs_dir = create_output_dirs("terminal_reserve", sensitivity_output_root(base_config))
 
     rows: list[dict[str, object]] = []
     manifest_rows: list[dict[str, object]] = []
@@ -125,7 +126,7 @@ def main() -> None:
         print(f"Running terminal_reserve = {terminal_reserve_pct:.0f}%")
         case_config = build_case_config(base_config, terminal_reserve_pct)
         config_stub = str(int(terminal_reserve_pct)) if float(terminal_reserve_pct).is_integer() else str(terminal_reserve_pct).replace(".", "p")
-        case_config_path = GENERATED_CONFIGS_DIR / f"terminal_reserve_{config_stub}pct.toml"
+        case_config_path = generated_configs_dir / f"terminal_reserve_{config_stub}pct.toml"
         write_config(case_config, case_config_path)
 
         metadata, run_dir = run_case(case_config_path)
@@ -155,10 +156,10 @@ def main() -> None:
     rows.sort(key=lambda row: float(row["terminal_reserve_pct"]))
     manifest_rows.sort(key=lambda row: float(row["terminal_reserve_pct"]))
 
-    summary_csv = OUTPUT_DIR / "summary.csv"
-    manifest_csv = OUTPUT_DIR / "run_manifest.csv"
-    summary_txt = OUTPUT_DIR / "summary.txt"
-    summary_png = OUTPUT_DIR / "overview.png"
+    summary_csv = output_dir / "summary.csv"
+    manifest_csv = output_dir / "run_manifest.csv"
+    summary_txt = output_dir / "summary.txt"
+    summary_png = output_dir / "overview.png"
 
     write_csv(
         rows,
@@ -181,7 +182,7 @@ def main() -> None:
         ["terminal_reserve_pct", "config_path", "run_dir"],
         manifest_csv,
     )
-    write_summary_text(rows, config_path, summary_txt)
+    write_summary_text(rows, config_path, output_dir, summary_txt)
     plot_summary(rows, summary_png)
 
     print(f"Saved {manifest_csv}")

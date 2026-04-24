@@ -9,7 +9,6 @@ function build_model(gensets, load, battery, initial_commitment)
     @variable(model, u[g in G, t in T], Bin)                                      # on/off status
     @variable(model, 0 <= y[g in G, t in T] <= 1)                                 # startup event (1 if g starts at t); continuous — integrality of u forces 0/1 at optimum
     @variable(model, Pg[g in G, t in T] >= 0)                                     # power output
-    @variable(model, SFOC[g in G, t in T] >= 0)                                   # specific fuel oil consumption (g/kWh)
     @variable(model, mdot[g in G, t in T] >= 0)                                   # fuel mass flow (g/h)
     @variable(model, 0 <= lambda[g in G, t in T, i in 1:length(gensets[g].SFOC)] <= 1)
 
@@ -17,13 +16,15 @@ function build_model(gensets, load, battery, initial_commitment)
     @variable(model, 0 <= P_ch[t in T]  <= battery.P_ch_max)                      # charging power
     @variable(model, 0 <= P_dis[t in T] <= battery.P_dis_max)                     # discharging power
     @variable(model, battery.SOC_min * battery.E_max <= E[t in 1:length(load)+1] <= battery.SOC_max * battery.E_max)  # stored energy
-    @variable(model, z_bat[t in T], Bin)                                             # battery charge/discharge status (1 if charging, 0 if discharging)
+    @variable(model, z_bat[t in T], Bin)                                         # battery mode (1 if discharging, 0 if charging)
 
     # ── Initial energy state ───────────────────────────────────────────────
     @constraint(model, E[1] == battery.E_init)
 
     # ── Terminal SOC constraint: don't drain below the configured terminal target
     @constraint(model, E[length(T)+1] >= battery.E_terminal_min)
+    @constraint(model, [t in T], P_dis[t] <= z_bat[t] * battery.P_dis_max)
+    @constraint(model, [t in T], P_ch[t]  <= (1 - z_bat[t]) * battery.P_ch_max)
 
     for t in T
         # Power balance: generators + battery discharge − battery charge = load
@@ -45,8 +46,6 @@ function build_model(gensets, load, battery, initial_commitment)
 
             @constraint(model, Pg[g, t] == sum(lambda[g, t, i] * gensets[g].P[i] for i in 1:length(gensets[g].SFOC)))
 
-            @constraint(model, SFOC[g, t] == sum(lambda[g, t, i] * gensets[g].SFOC[i] for i in 1:length(gensets[g].SFOC)))
-
             @constraint(
                 model,
                 mdot[g, t] == sum(
@@ -63,10 +62,6 @@ function build_model(gensets, load, battery, initial_commitment)
             @constraint(model, Pg[g, t] >= Pg[g+1, t])
         end
         
-        # ── Battery constraints ─────────────────────────────────────────────
-        @constraint(model, [t in T], P_dis[t] <= z_bat[t] * battery.P_dis_max)
-        @constraint(model, [t in T], P_ch[t]  <= (1 - z_bat[t]) * battery.P_ch_max)
-
         # Battery energy evolution
         # E_{k+1} = E_k + Δt (η_ch · P_ch_k − (1/η_dis) · P_dis_k)
         @constraint(model,
@@ -85,7 +80,7 @@ function build_model(gensets, load, battery, initial_commitment)
     )
     
 
-    return model, u, y, Pg, SFOC, mdot, lambda, P_ch, P_dis, E
+    return model, u, y, Pg, mdot, lambda, P_ch, P_dis, E
 end
 
 

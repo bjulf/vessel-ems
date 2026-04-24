@@ -14,8 +14,12 @@ It matches the latest report-side synthetic baseline that produced the current v
 
 Use the baseline file as the source of truth for sensitivity runs. Helper-generated configs should inherit all unchanged settings from it, especially `[terminal_conditions]`.
 
+For the no-terminal baseline sensitivity package, use `analysis/run_sensitivity_no_terminal_soc.py`.
+That package writes to `analysis/output/sensitivity_no_terminal_soc/` and intentionally excludes the terminal-reserve sweep.
+
 Named variants currently kept for sensitivity work:
 
+- `baseline_model_no_terminal_soc.toml`: baseline synthetic case with the terminal SOC retained only as a reference and not enforced
 - `baseline_model_soc50.toml`: lower synthetic initial SOC reference with the same `20-80%` battery window and `350 g/start`
 - `baseline_model_soc70_terminal50.toml`: `70%` initial SOC, `50%` terminal minimum SOC, `350 g/start`
 - `baseline_model_soc20_cstart_700g.toml`: reduced minimum SOC with `700 g/start`

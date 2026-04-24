@@ -1,0 +1,100 @@
+[[generators]]
+P_max = 385.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0
+P_min = 192.0
+[[generators]]
+P_max = 385.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0
+P_min = 192.0
+
+[terminal_conditions]
+battery_energy_min_kwh = 470.0
+
+[run]
+label = "operational_model_soc60_no_terminal_cstart_1000g_15min_max_rule_based"
+git_hash = "efcc3bf8c22726f3d7f5ed36545f83933f0e8b03"
+method = "rule_based"
+git_dirty = true
+config_file = "C:\\Users\\bulve\\OneDrive\\master\\model\\config\\operational_model_soc60_no_terminal_cstart_1000g_15min_max.toml"
+date = "2026-04-24"
+description = "Operational 15-minute max-hold telemetry profile with 60 percent initial battery SOC, no terminal SOC constraint, hard 20-80 percent battery SOC window, and 1000 g/start generator startup cost [rule-based supervisory controller]"
+
+[controller]
+preferred_generator_kw = 310.0
+mode = "rule_based"
+battery_soc_thresholds_are_soft = true
+startup_penalty_g = 4000.0
+two_generator_charge_latch = true
+name = "rule_based_supervisory"
+battery_charge_limit_kw = 753.0
+battery_discharge_limit_kw = 943.0
+battery_energy_ceiling_kwh = 940.0
+fuel_g = 888150.0
+preferred_two_generator_kw = 620.0
+soc_charge_start_pct = 20.0
+battery_energy_floor_kwh = 0.0
+equivalent_cost_g = 892150.0
+battery_only_load_override_removed = true
+terminal_reserve_enforced = false
+soc_charge_stop_pct = 80.0
+
+[validation.power_balance]
+max_residual_timestep = 265
+max_abs_residual_kw = 2.4868995751603507e-14
+max_residual_datetime = "2026-03-03 18:00"
+max_residual_kw = 2.4868995751603507e-14
+within_primal_feasibility_tolerance = true
+
+[validation.battery_energy]
+max_dynamic_residual_from_datetime = "2026-03-01 00:00"
+initial_residual_kwh = 0.0
+terminal_target_min_kwh = 470.0
+terminal_energy_kwh = 673.6323026315789
+terminal_soc_pct = 71.66301091825308
+terminal_target_min_soc_pct = 50.0
+terminal_constraint_residual_kwh = 203.6323026315789
+max_dynamic_residual_kwh = 0.0
+within_primal_feasibility_tolerance = true
+max_dynamic_residual_from_timestep = 1
+max_abs_dynamic_residual_kwh = 0.0
+max_dynamic_residual_to_timestep = 2
+
+[validation.solver_tolerances]
+mip_feasibility = 0.0
+primal_feasibility = 1.0e-6
+energy_residual_tolerance_kwh = 1.0e-6
+
+[solver]
+status = "SIMULATED"
+solve_time_s = 2.7128043
+equivalent_cost_g = 892150.0
+
+[battery]
+E_init = 564.0
+eta_ch = 0.95
+P_dis_max = 943.0
+SOC_terminal_min = 0.5
+eta_dis = 0.95
+dt = 0.25
+E_min = 188.0
+E_max = 752.0
+E_cap = 940.0
+P_ch_max = 753.0
+SOC_min = 0.2
+E_terminal_min = 470.0
+SOC_max = 0.8
+
+[load_profile]
+end_datetime = "2026-03-03 18:00"
+timesteps = 265
+source_file = "C:\\Users\\bulve\\OneDrive\\master\\model\\data\\operational_profiles\\operational_load_profile_15min_max.csv"
+start_datetime = "2026-03-01 00:00"
+dt_minutes = 15
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 564.0

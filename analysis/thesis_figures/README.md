@@ -25,14 +25,30 @@ Intended use:
 ### Results
 
 - [results/sfoc_regime_thesis_scatter.png](./results/sfoc_regime_thesis_scatter.png)
+- [results/sensitivity_analysis_other_main_sensitivities.png](./results/sensitivity_analysis_other_main_sensitivities.png)
+- [results/sensitivity_analysis_startup_cost_main.png](./results/sensitivity_analysis_startup_cost_main.png)
+- [results/synthetic_oem_points_by_module_cstart700.png](./results/synthetic_oem_points_by_module_cstart700.png)
 - [results/synthetic_verification_overview_soc70.png](./results/synthetic_verification_overview_soc70.png)
 - [results/synthetic_verification_overview_cstart700.png](./results/synthetic_verification_overview_cstart700.png)
 
 Intended use:
 
 - Results subsection for telemetry-based assessment of generator operating regimes and SFOC behavior
+- Results subsection for main sensitivity-analysis comparisons across non-startup parameters
+- Results subsection for startup-cost sensitivity behavior in the synthetic validation case
+- Results subsection or discussion figure for where the synthetic `700 g/start` dispatch occupies the modeled OEM SFOC curve, colored by synthetic operating module
 - Results subsection for synthetic-case verification of dispatch behavior with 70% initial SOC
 - Results subsection or sensitivity appendix figure for the synthetic validation case with `700 g/start` startup penalty
+
+### Appendix
+
+- [Appendix/sensitivity_analysis_initial_soc_appendix.png](./Appendix/sensitivity_analysis_initial_soc_appendix.png)
+- [Appendix/sensitivity_analysis_soc_min_appendix.png](./Appendix/sensitivity_analysis_soc_min_appendix.png)
+
+Intended use:
+
+- Appendix figure for sensitivity to initial battery state of charge
+- Appendix figure for sensitivity to minimum battery state of charge
 
 ## Related Handoffs
 

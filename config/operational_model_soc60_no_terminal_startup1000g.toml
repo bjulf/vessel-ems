@@ -1,0 +1,45 @@
+# Operational telemetry case derived from the preserved 15-minute comparison profile.
+# Variant: 60 percent initial battery SOC matched to the observed operational SOC,
+# no enforced terminal minimum SOC, hard 20-80 percent battery SOC window,
+# and 1000 g/start generator startup cost.
+
+[run]
+label = "operational_model_soc60_no_terminal_cstart_1000g"
+description = "Operational 15-minute averaged telemetry profile with 60 percent initial battery SOC, no terminal SOC constraint, hard 20-80 percent battery SOC window, and 1000 g/start generator startup cost"
+show_solver_log = true
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+path = "data/operational_profiles/operational_load_profile_15min_avg.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.20
+SOC_max = 0.80
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 564.0
+
+[terminal_conditions]
+battery_energy_min_kwh = 470.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0

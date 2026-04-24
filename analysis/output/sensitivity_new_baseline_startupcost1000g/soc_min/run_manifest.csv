@@ -1,0 +1,4 @@
+soc_min_pct,config_path,run_dir
+20,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\generated_configs\soc_min_20pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_134645_baseline_model_no_terminal_soc_cstart_1000g_socmin_20pct
+30,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\generated_configs\soc_min_30pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_134709_baseline_model_no_terminal_soc_cstart_1000g_socmin_30pct
+40,C:\Users\bulve\OneDrive\master\model\analysis\output\sensitivity_new_baseline_startupcost1000g\soc_min\generated_configs\soc_min_40pct.toml,C:\Users\bulve\OneDrive\master\model\runs\2026-04-23_134735_baseline_model_no_terminal_soc_cstart_1000g_socmin_40pct

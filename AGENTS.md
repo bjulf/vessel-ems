@@ -32,12 +32,57 @@ The main workflow is:
 - `runs/`: generated run directories with `params.toml`, `dispatch_results.csv`, and plots
 - `results/`: archived scenario/report outputs; treat as user-owned historical artifacts unless asked otherwise
 
+## Figure tree
+
+Use this quick tree when deciding where figures belong and where to look for the working outputs they came from:
+
+```text
+analysis/
+├─ output/
+│  ├─ sensitivity/
+│  │  ├─ startup_cost/
+│  │  ├─ initial_soc/
+│  │  ├─ soc_min/
+│  │  ├─ battery_efficiency/
+│  │  ├─ terminal_reserve/
+│  │  └─ thesis/                  # assembled sensitivity-analysis exports used for thesis curation
+│  ├─ startup_cost_sensitivity/   # older/specialized startup-cost sensitivity outputs
+│  ├─ verification/
+│  └─ timing/
+└─ thesis_figures/
+   ├─ methods/                    # curated thesis-candidate methods figures
+   ├─ results/                    # curated thesis-candidate results figures
+   ├─ Appendix/                   # curated appendix figures, including sensitivity appendices
+   └─ Thesis_ready/               # packaged snapshot for report assembly
+```
+
+Current sensitivity-analysis figure mapping:
+
+- Final curated main sensitivity figures live in `analysis/thesis_figures/results/`.
+- Final curated appendix sensitivity figures live in `analysis/thesis_figures/Appendix/`.
+- The current assembled source images for those curated sensitivity figures live in `analysis/output/sensitivity/thesis/`.
+- Parameter-specific working outputs remain under `analysis/output/sensitivity/startup_cost/`, `analysis/output/sensitivity/initial_soc/`, `analysis/output/sensitivity/soc_min/`, `analysis/output/sensitivity/battery_efficiency/`, and `analysis/output/sensitivity/terminal_reserve/`.
+- If you encounter startup-cost sensitivity material in `analysis/output/startup_cost_sensitivity/`, treat it as a working or legacy generation area unless the task explicitly targets that folder.
+
 ## Working assumptions
 
 - The Julia model is the primary source of truth for optimization behavior.
 - The Python layer is support tooling for data preparation, inspection, and reporting.
 - The repo is experiment-oriented. Preserve run history and avoid deleting generated artifacts unless explicitly asked.
 - The worktree may contain user-generated scenario outputs that are intentionally untracked.
+
+## Current benchmark baseline
+
+- For MILP vs rule-based benchmark comparisons, treat the current recommended baseline as the no-terminal-SOC benchmark defined in `config/baseline_model_no_terminal_soc_startup1000g.toml`.
+- The current recommended benchmark settings are:
+  - no terminal SOC constraint,
+  - startup cost = `1000 g/start`,
+  - minimum SOC = `20%`,
+  - initial SOC = `70%`,
+  - battery efficiency = `0.95`.
+- Use `main_baseline_no_terminal_soc.jl` as the entry point for this benchmark family.
+- Treat the older `700 g/start` no-terminal setup in `config/baseline_model_no_terminal_soc.toml` as a preserved comparison case, not the default benchmark baseline unless a task explicitly asks for it.
+- The dedicated sensitivity package for the current benchmark baseline lives under `analysis/output/sensitivity_new_baseline_startupcost1000g/`.
 
 ## Critical invariants
 
@@ -66,7 +111,7 @@ The main workflow is:
 When generating plots that are likely to be reused in the thesis or reports:
 
 - Optimize for readability after export, not only for interactive viewing
-- For new run-local plots in `runs/<run_dir>/plots/`, use the standard verification format produced by `analysis/plot_verification_case.py`, saving `verification_overview.png` and, when the script supports it, `verification_stress_window.png`; do not default to the older `plot.py` layout unless explicitly requested
+- For any newly generated run directory under `runs/`, create run-local plots with the standard verification format from `analysis/plot_verification_case.py`, saving `verification_overview.png` and, when the script supports it, `verification_stress_window.png`; do not use the older `plot.py` layout unless the task explicitly asks for the legacy/general dispatch plots
 - Use larger-than-default text for titles, axis labels, tick labels, and in-plot annotations
 - Prefer direct labels inside the figure when they are clearer than a separate legend
 - Avoid redundant legends when the same categories are already clearly labeled in the plot
@@ -75,15 +120,19 @@ When generating plots that are likely to be reused in the thesis or reports:
 ## Analysis and figure workflow
 
 - Keep exploratory scripts and notes in `analysis/`.
+- Keep reusable figure-generation scripts in `analysis/figure_scripts/` when they are important enough to preserve beyond a single thread or one-off export.
 - Keep one-off or intermediate outputs in `analysis/output/`.
 - Keep preserved telemetry case outputs in `analysis/sfoc_cases/`.
 - Keep thesis-candidate figures in `analysis/thesis_figures/methods/` and `analysis/thesis_figures/results/`.
+- Keep appendix-ready thesis figures in `analysis/thesis_figures/Appendix/`.
 - Add or update a short note in `analysis/thesis_figures/README.md` when a new figure becomes a serious thesis candidate.
+- The main synthetic-case comparison figure script lives at `analysis/figure_scripts/plot_synthetic_dispatch_comparison.py`; use this script for the thesis-facing multi-algorithm synthetic dispatch comparison figure rather than recreating that layout from scratch.
 - Keep continuation notes in `analysis/handoffs/` when a thread produces reusable guidance for later report or plotting work.
 - For operational telemetry work, separate:
   - general operational data / load reconstruction validation,
   - and telemetry-based SFOC assessment.
 - Do not force internal diagnostic plots into the thesis when a clearer explanatory figure can be generated from the same data.
+- When curating sensitivity-analysis figures, keep the generated working exports in `analysis/output/sensitivity/thesis/` and copy the shortlisted versions into `analysis/thesis_figures/results/` or `analysis/thesis_figures/Appendix/` as appropriate.
 
 ## Validation workflow
 
@@ -99,6 +148,7 @@ Use the smallest relevant validation for the change:
   - Verify `params.toml` and `dispatch_results.csv` reflect the intended change
 - Plot/report changes:
   - For standard run-local verification plots, run `python analysis/plot_verification_case.py <run_dir>`
+  - If you generated a new run during validation, treat these verification plots as the default run-local plotting step
   - Use `python plot.py <run_dir>` only when the task explicitly asks for the legacy/general dispatch figure set
   - Run `quarto render report.qmd` or render with `RUN_DIR` set to a specific run
 
