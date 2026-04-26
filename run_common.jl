@@ -26,6 +26,88 @@ function read_load_profile(path)
     return load, datetimes
 end
 
+const FORECAST_METHODS = ("persistence", "moving_average", "oracle_realized_local_load")
+
+function normalize_forecast_method(method)
+    normalized = lowercase(strip(String(method)))
+    if normalized == "realized_local_load"
+        return "oracle_realized_local_load"
+    end
+    normalized in FORECAST_METHODS || error(
+        "Unsupported rolling_horizon.forecast_method=$(method). Supported values are: $(join(FORECAST_METHODS, ", "))."
+    )
+    return normalized
+end
+
+function forecast_settings_from_config(rolling_cfg)
+    method = normalize_forecast_method(get(rolling_cfg, "forecast_method", "persistence"))
+    moving_average_window_steps = Int(get(rolling_cfg, "moving_average_window_steps", 4))
+    moving_average_window_steps >= 1 || error(
+        "rolling_horizon.moving_average_window_steps must be >= 1; got $(moving_average_window_steps)."
+    )
+
+    tail_forecast_policy = String(get(rolling_cfg, "tail_forecast_policy", "repeat_final_load"))
+    tail_forecast_policy == "repeat_final_load" || error(
+        "Unsupported rolling_horizon.tail_forecast_policy=$(tail_forecast_policy). Supported values are: repeat_final_load."
+    )
+
+    return (
+        forecast_method = method,
+        moving_average_window_steps = moving_average_window_steps,
+        tail_forecast_policy = tail_forecast_policy,
+    )
+end
+
+function rolling_load_forecast(load, r, H, settings)
+    1 <= r <= length(load) || error("Forecast update index r=$(r) is outside load profile length $(length(load)).")
+    H >= 1 || error("rolling_horizon.horizon_steps must be >= 1; got $(H).")
+
+    method = normalize_forecast_method(settings.forecast_method)
+
+    if method == "persistence"
+        return fill(load[r], H)
+    elseif method == "moving_average"
+        window_steps = settings.moving_average_window_steps
+        N_r = min(window_steps, r)
+        forecast_value = sum(@view load[(r - N_r + 1):r]) / N_r
+        forecast = fill(forecast_value, H)
+        forecast[1] = load[r]
+        return forecast
+    elseif method == "oracle_realized_local_load"
+        settings.tail_forecast_policy == "repeat_final_load" || error(
+            "Unsupported rolling_horizon.tail_forecast_policy=$(settings.tail_forecast_policy). Supported values are: repeat_final_load."
+        )
+        N = length(load)
+        return [
+            (r + j - 1 <= N) ? load[r + j - 1] : load[end]
+            for j in 1:H
+        ]
+    end
+
+    error("Unsupported rolling_horizon.forecast_method=$(settings.forecast_method).")
+end
+
+function rolling_forecast_definition(settings)
+    method = normalize_forecast_method(settings.forecast_method)
+    if method == "persistence"
+        return "P_hat_L(r,j) = P_L[r] for j=1,...,H"
+    elseif method == "moving_average"
+        return "P_hat_L(r,1) = P_L[r]; P_hat_L(r,j) = mean(P_L[(r-N_r+1):r]) for j=2,...,H, N_r=min(moving_average_window_steps,r)"
+    elseif method == "oracle_realized_local_load"
+        return "P_hat_L(r,j) = P_L[r+j-1] when available, with configured tail padding beyond the final realized timestep"
+    end
+    error("Unsupported rolling_horizon.forecast_method=$(settings.forecast_method).")
+end
+
+function rolling_forecast_uses_realized_future_load(settings)
+    return normalize_forecast_method(settings.forecast_method) == "oracle_realized_local_load"
+end
+
+function rolling_forecast_tail_padded_steps(load, r, H, settings)
+    rolling_forecast_uses_realized_future_load(settings) || return 0
+    return count(j -> r + j - 1 > length(load), 1:H)
+end
+
 function load_model_config(config_path)
     raw = TOML.parsefile(config_path)
 

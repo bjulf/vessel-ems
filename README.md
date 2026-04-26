@@ -11,13 +11,13 @@ The model minimises total fuel consumption across a fleet of generators over a g
 | File | Description |
 |---|---|
 | `model.jl` | JuMP optimisation model (variables, constraints, objective) |
-| `main.jl` | Entry point — reads the active load profile, solves, writes CSV |
-| `model_baseline_no_terminal_soc.jl` | Clean baseline variant with the terminal SOC requirement removed |
-| `main_baseline_no_terminal_soc.jl` | Entry point for the clean no-terminal-SOC baseline variant |
+| `main_baseline.jl` | Current full-horizon benchmark entry point |
+| `main_rolling_horizon.jl` | Rolling-horizon MILP controller entry point |
+| `main.jl` | Legacy terminal-SOC full-horizon entry point |
 | `experimental_models/` | Temporary or exploratory model/entry-point variants kept out of the main top-level layout |
 | `rule_based.jl` | Separate rule-based supervisory EMS entry point for baseline comparison runs |
 | `config/baseline_model.toml` | Baseline run parameters and default model input selection |
-| `config/baseline_model_no_terminal_soc.toml` | Clean no-terminal-SOC baseline-variant parameters |
+| `config/baseline_model_terminal_soc50_startup700g.toml` | Preserved older terminal-SOC comparison case |
 | `types.jl` | Type definitions (reserved for future use) |
 | `data/generate_synthetic_profile.py` | Generates synthetic 24 h / 15 min load scenarios and plots |
 | `plot.py` | Python plotting script for dispatch results |
@@ -41,14 +41,14 @@ This writes:
 ### Solve the dispatch problem
 
 ```bash
-julia --project=. main.jl
+julia --project=. main_baseline.jl
 ```
 
 By default this loads `config/baseline_model.toml`.
 You can also provide a different parameter file:
 
 ```bash
-julia --project=. main.jl config/baseline_model.toml
+julia --project=. main_baseline.jl config/baseline_model.toml
 ```
 
 This produces a run directory in `runs/` with `dispatch_results.csv` and `params.toml`.

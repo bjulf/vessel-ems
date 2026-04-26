@@ -11,6 +11,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SENSITIVITY_OUTPUT_ROOT = REPO_ROOT / "analysis" / "output" / "sensitivity"
+BASELINE_SENSITIVITY_OUTPUT_ROOT = REPO_ROOT / "analysis" / "output" / "sensitivity_baseline"
 NO_TERMINAL_SENSITIVITY_OUTPUT_ROOT = REPO_ROOT / "analysis" / "output" / "sensitivity_no_terminal_soc"
 
 
@@ -38,7 +39,7 @@ def format_toml_array(values: list[object]) -> str:
 
 def sensitivity_output_root_name(config: dict) -> str:
     entry_point = Path(str(config.get("run", {}).get("entry_point", "main.jl"))).name
-    return "sensitivity_no_terminal_soc" if entry_point == "main_baseline_no_terminal_soc.jl" else "sensitivity"
+    return "sensitivity_baseline" if entry_point == "main_baseline.jl" else "sensitivity"
 
 
 def sensitivity_output_root(config: dict) -> Path:
@@ -49,7 +50,7 @@ def sensitivity_output_root(config: dict) -> Path:
             raise ValueError(f"Configured output_root must be inside the repository: {output_root}")
         return output_root
     root_name = sensitivity_output_root_name(config)
-    return NO_TERMINAL_SENSITIVITY_OUTPUT_ROOT if root_name == "sensitivity_no_terminal_soc" else SENSITIVITY_OUTPUT_ROOT
+    return BASELINE_SENSITIVITY_OUTPUT_ROOT if root_name == "sensitivity_baseline" else SENSITIVITY_OUTPUT_ROOT
 
 
 def write_config(config: dict, path: Path) -> None:

@@ -1,5 +1,7 @@
 # Frozen thesis baseline model parameters with a reduced minimum SOC
 # and higher generator startup cost for a separate sensitivity run.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "baseline_model_soc20_cstart_700g"

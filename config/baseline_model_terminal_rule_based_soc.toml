@@ -1,4 +1,6 @@
 # Synthetic baseline case with terminal SOC matched to the latest rule-based baseline run.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "baseline_model_terminal_rule_based_soc"

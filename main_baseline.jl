@@ -1,6 +1,6 @@
 using JuMP, HiGHS, Printf, Dates, TOML
 
-include("model_baseline_no_terminal_soc.jl")
+include("model.jl")
 include("run_common.jl")
 
 const MOI = JuMP.MOI
@@ -28,7 +28,7 @@ function extract_results(load, gensets, u, y, Pg, mdot, lambda, P_ch, P_dis, E)
 end
 
 function main()
-    config_arg = isempty(ARGS) ? joinpath("config", "baseline_model_no_terminal_soc.toml") : ARGS[1]
+    config_arg = isempty(ARGS) ? joinpath("config", "baseline_model.toml") : ARGS[1]
     config_path = resolve_repo_path(config_arg)
     cfg = load_model_config(config_path)
 
@@ -48,7 +48,7 @@ function main()
 
     show_solver_log = cfg.show_solver_log
 
-    model, u, y, Pg, mdot, lambda, P_ch, P_dis, E = build_model_baseline_no_terminal_soc(
+    model, u, y, Pg, mdot, lambda, P_ch, P_dis, E = build_model_baseline(
         gensets,
         load,
         battery,
@@ -91,8 +91,8 @@ function main()
                 "git_hash"    => git_hash,
                 "git_dirty"   => git_dirty,
                 "config_file" => config_path,
-                "entry_point" => "main_baseline_no_terminal_soc.jl",
-                "model_file"  => "model_baseline_no_terminal_soc.jl",
+                "entry_point" => "main_baseline.jl",
+                "model_file"  => "model.jl",
             ),
             "solver" => Dict(
                 "status"       => string(termination_status(model)),

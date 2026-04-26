@@ -1,0 +1,64 @@
+# Synthetic rolling-horizon benchmark using the current full-horizon baseline
+# parameters.
+#
+# The rolling controller uses a soft preferred SOC operating band. The battery
+# SOC_min/SOC_max values remain the hard bounds for the offline full-horizon
+# benchmark; the rolling local MILP uses 0-100 percent physical energy bounds
+# and penalizes violations of the preferred band below.
+
+[run]
+label = "rolling_horizon_synthetic"
+description = "Synthetic rolling-horizon MILP benchmark with H=24, 15-minute timestep, first-step implementation, and soft 20-80 percent preferred SOC band"
+show_solver_log = false
+entry_point = "main_rolling_horizon.jl"
+benchmark_entry_point = "main_baseline.jl"
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+# Synthetic 24-hour / 15-minute validation profile used in the report baseline.
+path = "data/synthetic_profiles/validation_profile.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.20
+SOC_max = 0.80
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 658.0
+
+[terminal_conditions]
+battery_energy_min_kwh = 470.0
+
+[rolling_horizon]
+horizon_steps = 24
+forecast_method = "persistence"
+moving_average_window_steps = 4
+soc_strategy = "soft_band"
+tail_forecast_policy = "repeat_final_load"
+
+[soft_soc]
+preferred_soc_min = 0.20
+preferred_soc_max = 0.80
+soc_min_penalty_g_per_kwh = 1000.0
+soc_max_penalty_g_per_kwh = 1000.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 1000.0

@@ -9,8 +9,8 @@ import pandas as pd
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BASELINE_CONFIG = REPO_ROOT / "config" / "baseline_model_no_terminal_soc_startup1000g.toml"
-SOURCE_ROOT = REPO_ROOT / "analysis" / "output" / "sensitivity_new_baseline_startupcost1000g"
+BASELINE_CONFIG = REPO_ROOT / "config" / "baseline_model.toml"
+SOURCE_ROOT = REPO_ROOT / "analysis" / "output" / "sensitivity_baseline"
 OUTPUT_DIR = SOURCE_ROOT / "thesis_figures"
 STARTUP_COST_SUMMARY = SOURCE_ROOT / "startup_cost" / "summary.csv"
 STARTUP_COST_HIGH_RES_SUMMARY = SOURCE_ROOT / "startup_cost" / "high_res_scan_summary.csv"

@@ -2,6 +2,8 @@
 # Variant: 70 percent initial battery SOC, 50 percent terminal minimum SOC,
 # 20 percent battery minimum SOC bound, 80 percent battery maximum SOC bound,
 # and 700 g/start generator startup cost.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "baseline_model_soc70_terminal50_socmin20_socmax80_cstart700g"

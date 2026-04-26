@@ -13,10 +13,10 @@ Read `AGENTS.md` first and follow it.
 
 The baseline MILP has just been cleaned up:
 
-- The no-terminal baseline entry point is `main_baseline_no_terminal_soc.jl`.
+- The current baseline entry point is `main_baseline.jl`.
 - The no-terminal baseline config is `config/baseline_model_no_terminal_soc.toml`.
 - That config now includes:
-  - `entry_point = "main_baseline_no_terminal_soc.jl"`
+  - `entry_point = "main_baseline.jl"`
 - The shared sensitivity runner helper in `analysis/sensitivity_common.py` now respects `run.entry_point` from the config instead of always calling `main.jl`.
 - A dedicated suite runner exists:
   - `analysis/run_sensitivity_no_terminal_soc.py`

@@ -15,7 +15,9 @@ The main workflow is:
 
 ## Source map
 
-- `main.jl`: main entry point, run metadata, solver execution, and result export
+- `main_baseline.jl`: current full-horizon benchmark entry point, run metadata, solver execution, and result export
+- `main_rolling_horizon.jl`: rolling-horizon MILP controller entry point
+- `main.jl`: preserved terminal-SOC full-horizon entry point
 - `model.jl`: JuMP model formulation and optimization variables/constraints/objective
 - `types.jl`: currently unused type definitions and notes
 - `data/preprocess.py`: builds `data/load_profile.csv` for the default MILP input and `data/operational_profiles/operational_load_profile_1min.csv` for comparison and timestep-sensitivity work
@@ -73,31 +75,31 @@ Current sensitivity-analysis figure mapping:
 
 ## Current benchmark baseline
 
-- For MILP vs rule-based benchmark comparisons, treat the current recommended baseline as the no-terminal-SOC benchmark defined in `config/baseline_model_no_terminal_soc_startup1000g.toml`.
+- For MILP vs rule-based benchmark comparisons, treat the current recommended full-horizon baseline as `config/baseline_model.toml`.
 - The current recommended benchmark settings are:
   - no terminal SOC constraint,
   - startup cost = `1000 g/start`,
   - minimum SOC = `20%`,
   - initial SOC = `70%`,
   - battery efficiency = `0.95`.
-- Use `main_baseline_no_terminal_soc.jl` as the entry point for this benchmark family.
+- Use `main_baseline.jl` as the entry point for this benchmark family.
 - Treat the older `700 g/start` no-terminal setup in `config/baseline_model_no_terminal_soc.toml` as a preserved comparison case, not the default benchmark baseline unless a task explicitly asks for it.
-- The dedicated sensitivity package for the current benchmark baseline lives under `analysis/output/sensitivity_new_baseline_startupcost1000g/`.
+- The dedicated sensitivity package for the current benchmark baseline lives under `analysis/output/sensitivity_baseline/`.
 
 ## Critical invariants
 
-- Keep `data/preprocess.py:RESAMPLE_MINUTES` aligned with `main.jl:dt_minutes`. These must represent the same timestep length.
-- `main.jl` expects `data/load_profile.csv` with columns `timestep,load_kw,datetime`.
-- Treat `data/load_profile.csv` as the default model input tied to `main.jl:dt_minutes`, not as the preserved high-resolution operational comparison profile.
+- Keep `data/preprocess.py:RESAMPLE_MINUTES` aligned with the active model `dt_minutes`. These must represent the same timestep length.
+- The full-horizon entry points expect load-profile CSV files with columns `timestep,load_kw,datetime`.
+- Treat `data/load_profile.csv` as the default model input tied to the configured timestep, not as the preserved high-resolution operational comparison profile.
 - Treat `data/operational_profiles/operational_load_profile_1min.csv` as the preserved 1-minute reconstructed operational profile for final comparison and timestep sensitivity. Do not repurpose it as the default MILP input without an explicit model-timestep change.
-- `main.jl` writes the active run path to `.current_run`; `report.qmd` relies on that when `RUN_DIR` is not set.
+- The Julia entry points write the active run path to `.current_run`; `report.qmd` relies on that when `RUN_DIR` is not set.
 - `model.jl` contains a symmetry-breaking power-ordering constraint for generators. If generators stop being identical, revisit that logic before keeping the ordering constraint.
 - Battery energy dynamics, objective scaling, and reported fuel totals all depend on `battery.dt`; timestep edits need a full end-to-end consistency check.
 
 ## Editing guidance
 
 - Prefer small, targeted changes. This repo is compact and tightly coupled.
-- When changing optimization behavior, inspect both `model.jl` and `main.jl`; parameters are defined in `main.jl`, not a separate config file.
+- When changing optimization behavior, inspect `model.jl` and the relevant entry point/config pair.
 - Do not hand-edit files inside `runs/` unless the task is explicitly about repairing generated artifacts.
 - Do not remove or rewrite files in `results/` just because newer run outputs exist.
 - Treat `analysis/sfoc_cases/` and `analysis/sfoc_datasets/` as preserved analysis records. Do not delete or overwrite them casually.
@@ -143,7 +145,7 @@ Use the smallest relevant validation for the change:
   - Confirm `data/load_profile.csv` shape and datetime range look reasonable
   - If the change affects operational comparison inputs, also confirm `data/operational_profiles/operational_load_profile_1min.csv` shape and datetime range
 - Model or parameter changes:
-  - Run `julia --project=. main.jl`
+  - Run `julia --project=. main_baseline.jl`
   - Check solver status and inspect the newly created directory in `runs/`
   - Verify `params.toml` and `dispatch_results.csv` reflect the intended change
 - Plot/report changes:

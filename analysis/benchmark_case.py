@@ -59,7 +59,12 @@ def slugify(text: str) -> str:
 
 def run_case(config_path: Path) -> tuple[float, dict, Path]:
     rel_config = config_path.relative_to(REPO_ROOT)
-    command = ["julia", "--project=.", "main.jl", str(rel_config)]
+    with open(config_path, "rb") as fh:
+        case_config = tomllib.load(fh)
+    entry_point = resolve_repo_path(str(case_config.get("run", {}).get("entry_point", "main.jl")))
+    if not entry_point.is_relative_to(REPO_ROOT):
+        raise ValueError(f"Entry point must be inside the repository: {entry_point}")
+    command = ["julia", "--project=.", str(entry_point.relative_to(REPO_ROOT)), str(rel_config)]
     started = time.perf_counter()
     completed = subprocess.run(
         command,

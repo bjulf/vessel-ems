@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = REPO_ROOT / "config" / "baseline_model_no_terminal_soc_startup1000g.toml"
+DEFAULT_CONFIG = REPO_ROOT / "config" / "baseline_model.toml"
 SWEEP_SCRIPTS = [
     "startup_cost_sensitivity.py",
     "soc_min_sensitivity.py",
@@ -19,15 +19,15 @@ SWEEP_SCRIPTS = [
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "Run the no-terminal sensitivity package for the 1000 g/start baseline. "
-            "Outputs are written to analysis/output/sensitivity_new_baseline_startupcost1000g/."
+            "Run the sensitivity package for the current full-horizon benchmark baseline. "
+            "Outputs are written to the baseline config's output_root."
         )
     )
     parser.add_argument(
         "config",
         nargs="?",
         default=str(DEFAULT_CONFIG),
-        help="Config path relative to repo root or absolute path. Defaults to the 1000 g/start no-terminal baseline config.",
+        help="Config path relative to repo root or absolute path. Defaults to the current baseline config.",
     )
     return parser.parse_args()
 
@@ -56,8 +56,7 @@ def main() -> None:
             check=True,
         )
 
-    print("Completed startup-1000g no-terminal sensitivity package.")
-    print(f"Outputs: {REPO_ROOT / 'analysis' / 'output' / 'sensitivity_new_baseline_startupcost1000g'}")
+    print("Completed baseline sensitivity package.")
 
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@
 # Variant: 60 percent initial battery SOC matched to the observed operational SOC,
 # 50 percent terminal minimum SOC, 20-80 percent battery SOC window,
 # and 700 g/start generator startup cost.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "operational_model_soc60_terminal50_socmin20_socmax80_cstart700g"

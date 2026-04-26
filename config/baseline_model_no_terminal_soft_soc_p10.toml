@@ -1,5 +1,7 @@
 # Baseline synthetic validation case with no enforced terminal SOC constraint.
 # The 20-80 percent operating SOC window is softened with much lower slack penalties.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "baseline_model_no_terminal_soft_soc_p10"

@@ -37,7 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "config",
         nargs="?",
-        default="config/baseline_model_no_terminal_soc_startup1000g.toml",
+        default="config/baseline_model.toml",
         help="Config path relative to repo root or absolute path.",
     )
     parser.add_argument(

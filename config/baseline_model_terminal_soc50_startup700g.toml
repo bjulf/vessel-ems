@@ -1,13 +1,13 @@
-# Frozen thesis baseline model parameters with the terminal SOC constraint removed.
-# This variant matches the no-terminal benchmark case but uses 1000 g/start as the
-# baseline startup-cost assumption and writes sensitivity outputs to a separate tree.
+# Frozen thesis baseline model parameters.
+# Updated baseline: 70 percent initial SOC, 50 percent terminal minimum SOC,
+# 20-80 percent battery SOC window, and 700 g/start generator startup cost.
+# NOTE: This is a preserved older terminal-SOC case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
-label = "baseline_model_no_terminal_soc_cstart_1000g"
-description = "Frozen thesis no-terminal benchmark configuration with 70 percent initial battery SOC, no terminal SOC constraint, 20-80 percent battery SOC window, and 1000 g/start generator startup cost"
+label = "baseline_model_terminal_soc50_startup700g"
+description = "Frozen thesis baseline configuration with 70 percent initial battery SOC, 50 percent terminal minimum SOC, 20-80 percent battery SOC window, and 700 g/start generator startup cost"
 show_solver_log = true
-entry_point = "main_baseline_no_terminal_soc.jl"
-output_root = "analysis/output/sensitivity_new_baseline_startupcost1000g"
 
 [scheduling]
 dt_minutes = 15
@@ -37,11 +37,11 @@ P_max = 385.0
 P_min = 192.0
 P = [192.0, 288.0, 310.0, 385.0]
 SFOC = [193.0, 191.0, 191.0, 198.0]
-startup_cost = 1000.0
+startup_cost = 700.0
 
 [[generators]]
 P_max = 385.0
 P_min = 192.0
 P = [192.0, 288.0, 310.0, 385.0]
 SFOC = [193.0, 191.0, 191.0, 198.0]
-startup_cost = 1000.0
+startup_cost = 700.0

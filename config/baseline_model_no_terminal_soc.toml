@@ -1,12 +1,15 @@
 # Frozen thesis baseline model parameters with the terminal SOC constraint removed.
 # This variant matches the baseline synthetic case except that the terminal minimum
 # battery energy is kept only as a reference and is not enforced in the model.
+# NOTE: This is a preserved older 700 g/start case, not the current main benchmark baseline.
+# Current baseline: config/baseline_model.toml.
 
 [run]
 label = "baseline_model_no_terminal_soc"
 description = "Frozen thesis baseline configuration with 70 percent initial battery SOC, no terminal SOC constraint, 20-80 percent battery SOC window, and 700 g/start generator startup cost"
 show_solver_log = true
-entry_point = "main_baseline_no_terminal_soc.jl"
+entry_point = "main_baseline.jl"
+output_root = "analysis/output/sensitivity_no_terminal_soc"
 
 [scheduling]
 dt_minutes = 15

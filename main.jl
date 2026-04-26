@@ -28,7 +28,7 @@ function extract_results(load, gensets, u, y, Pg, mdot, lambda, P_ch, P_dis, E)
 end
 
 function main()
-    config_arg = isempty(ARGS) ? joinpath("config", "baseline_model.toml") : ARGS[1]
+    config_arg = isempty(ARGS) ? joinpath("config", "baseline_model_terminal_soc50_startup700g.toml") : ARGS[1]
     config_path = resolve_repo_path(config_arg)
     cfg = load_model_config(config_path)
 

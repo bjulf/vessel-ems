@@ -35,7 +35,7 @@ from plot_verification_case import (
 
 
 OUTPUT_DIR = REPO_ROOT / "analysis" / "output" / "verification"
-DEFAULT_MILP_SUFFIX = "baseline_model_no_terminal_soc"
+DEFAULT_MILP_SUFFIX = "baseline_model"
 DEFAULT_RULE_SUFFIX = "baseline_model_rule_based"
 
 FONT_SIZE = 15

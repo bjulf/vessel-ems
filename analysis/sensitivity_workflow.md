@@ -39,4 +39,4 @@ Secondary KPIs:
 - `analysis/soc_min_sensitivity.py`
 - `analysis/initial_soc_sensitivity.py`
 
-These scripts all inherit from `config/baseline_model.toml`, generate case configs under the sweep-specific output folder, run `main.jl`, and summarize the resulting run directories.
+These scripts all inherit from `config/baseline_model.toml`, generate case configs under the sweep-specific output folder, run the `entry_point` declared by the config, and summarize the resulting run directories.
