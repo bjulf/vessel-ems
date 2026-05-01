@@ -20,6 +20,10 @@ Before any further studies, sensitivity analysis, or new result generation in th
 - The main remaining alignment risk is helper drift in report and sensitivity config generation. Those paths must preserve the same baseline parameters and `[terminal_conditions]` as `config/baseline_model.toml`.
 - Treat `config/baseline_model.toml` as the local implementation source of truth when launching new baseline and sensitivity runs.
 
+### Rolling-horizon baseline follow-up
+
+After the final receding-horizon baseline parameters are frozen, rerun the compact baseline-contender sweep under those final settings before starting the full sensitivity analysis. The sweep should re-check the selected horizon length, SOC soft-penalty level, startup penalty, and minimum up-time together, then regenerate the small appendix-style summary plot/table from the final authoritative runs. This avoids citing exploratory runs whose configs or helper writers changed during tuning.
+
 ## Purpose
 
 This document defines a step-by-step process for deciding whether this project should:
@@ -687,6 +691,49 @@ Check whether dispatch conclusions change materially:
 - preferred operating region.
 
 If optimization conclusions are highly sensitive to uncertain SFOC assumptions, that must be stated explicitly in the thesis.
+
+### Rolling-horizon forecast-controller tuning
+
+The synthetic rolling-horizon comparison currently separates two effects:
+
+- `config/rolling_horizon_oracle_synthetic.toml` uses realized local load inside the rolling horizon and nearly matches the offline full-horizon MILP.
+- `config/rolling_horizon_synthetic.toml` uses the practical moving-average forecast and is more conservative, with higher fuel use, more starts, and a higher final SOC.
+
+This indicates that the first tuning question is forecast-horizon behavior, not startup-cost calibration. With the current moving-average forecast, the local horizon repeats a flat recent-load average after the first realized step. A long horizon can therefore overstate sustained load after a step change and trigger early generator starts to protect the soft SOC band.
+
+Run the rolling-horizon tuning sweeps in this order:
+
+1. Horizon-length sweep.
+   - Keep startup cost at `1000 g/start`.
+   - Keep the preferred soft SOC band at `20-80%`.
+   - Keep soft SOC penalties at `1000 g/kWh`.
+   - Test `horizon_steps = 8, 12, 16, 18, 20, 24`.
+   - Compare against both the offline full-horizon MILP and the oracle rolling-horizon run.
+
+2. Soft-SOC penalty sweep.
+   - Use the best one or two horizon lengths from the horizon sweep.
+   - Test penalties such as `100, 300, 1000, 3000 g/kWh`.
+   - Record whether lower penalties reduce conservative battery preservation without creating unacceptable SOC-band violations.
+
+3. Preferred SOC-band sweep.
+   - Focus first on the lower preferred SOC bound.
+   - Test lower-band values such as `10%, 15%, 20%, 25%`, keeping the hard physical/model SOC bound separate.
+   - Record final SOC surplus, minimum SOC, and realized soft-SOC slack.
+
+4. Startup-cost sweep.
+   - Run after the horizon and soft-SOC behavior is understood.
+   - Use it to tune generator cycling, not to compensate for a forecast-horizon mismatch.
+   - Compare fuel, starts, and any late high-load behavior against the oracle and offline benchmarks.
+
+For every sweep case, record:
+
+- fuel penalty versus offline full horizon,
+- starts penalty versus offline full horizon,
+- final SOC surplus versus offline full horizon,
+- minimum and maximum SOC,
+- realized and local soft-SOC slack,
+- number of non-optimal, timeout, or infeasible local solves,
+- median, P95, and maximum local solve time.
 
 Exit criterion:
 

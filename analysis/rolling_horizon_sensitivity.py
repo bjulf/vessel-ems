@@ -18,6 +18,7 @@ DEFAULT_CONFIG = "config/rolling_horizon_terminal_reserve_operational.toml"
 DEFAULT_TERMINAL_SOC_TARGETS = [0.20, 0.30, 0.40, 0.50, 0.60]
 DEFAULT_C_TERM_VALUES = [350.0, 600.0, 1000.0, 1500.0]
 OUTPUT_DIR = REPO_ROOT / "analysis" / "output" / "rolling_horizon" / "operational_reserve_tuning"
+TERMINAL_RESERVE_STRATEGY = "terminal_reserve"
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,7 +71,14 @@ def write_rolling_config(config: dict, path: Path) -> None:
     initial_conditions = config["initial_conditions"]
     terminal_conditions = config.get("terminal_conditions", {})
     rolling = config["rolling_horizon"]
+    solver = config.get("solver", {})
     generators = config["generators"]
+    soc_strategy = rolling.get("soc_strategy", TERMINAL_RESERVE_STRATEGY)
+    if soc_strategy != TERMINAL_RESERVE_STRATEGY:
+        raise ValueError(
+            "rolling_horizon_sensitivity.py only writes terminal-reserve cases; "
+            f"got soc_strategy={soc_strategy!r}."
+        )
 
     lines.extend(
         [
@@ -122,13 +130,25 @@ def write_rolling_config(config: dict, path: Path) -> None:
             f"horizon_steps = {format_toml_scalar(rolling['horizon_steps'])}",
             f"forecast_method = {format_toml_scalar(rolling.get('forecast_method', 'persistence'))}",
             f"moving_average_window_steps = {format_toml_scalar(rolling.get('moving_average_window_steps', 4))}",
-            f"soc_strategy = {format_toml_scalar(rolling.get('soc_strategy', 'terminal_reserve'))}",
+            f"soc_strategy = {format_toml_scalar(TERMINAL_RESERVE_STRATEGY)}",
             f"terminal_soc_target = {format_toml_scalar(rolling['terminal_soc_target'])}",
             f"terminal_slack_penalty_g_per_kwh = {format_toml_scalar(rolling['terminal_slack_penalty_g_per_kwh'])}",
             f"tail_forecast_policy = {format_toml_scalar(rolling['tail_forecast_policy'])}",
             "",
         ]
     )
+
+    if solver:
+        lines.extend(["[solver]"])
+        for key in [
+            "rolling_local_time_limit_sec",
+            "progress_log_enabled",
+            "progress_log_every_steps",
+            "slow_solve_log_threshold_sec",
+        ]:
+            if key in solver:
+                lines.append(f"{key} = {format_toml_scalar(solver[key])}")
+        lines.append("")
 
     for generator in generators:
         lines.extend(
@@ -148,6 +168,7 @@ def write_rolling_config(config: dict, path: Path) -> None:
 
 def build_case_config(base_config: dict, terminal_soc_target: float, c_term: float) -> dict:
     case_config = deepcopy(base_config)
+    case_config.pop("soft_soc", None)
     target_label = pct_label(terminal_soc_target)
     c_label = cterm_label(c_term)
     case_config["run"]["label"] = (
@@ -158,6 +179,7 @@ def build_case_config(base_config: dict, terminal_soc_target: float, c_term: flo
         f"terminal SOC target {terminal_soc_target:.0%}, C_term {c_term:g} g/kWh"
     )
     case_config["run"]["show_solver_log"] = False
+    case_config["rolling_horizon"]["soc_strategy"] = TERMINAL_RESERVE_STRATEGY
     case_config["rolling_horizon"]["terminal_soc_target"] = float(terminal_soc_target)
     case_config["rolling_horizon"]["terminal_slack_penalty_g_per_kwh"] = float(c_term)
     return case_config
@@ -169,11 +191,14 @@ def run_case(config_path: Path) -> tuple[dict, Path, float]:
     completed = subprocess.run(
         ["julia", "--project=.", "main_rolling_horizon.jl", str(rel_config)],
         cwd=REPO_ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
+        check=False,
     )
     wall_clock_runtime_s = time.perf_counter() - started_at
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"Case {rel_config} failed with exit code {completed.returncode}."
+        )
+
     current_run = Path((REPO_ROOT / ".current_run").read_text(encoding="utf-8").strip())
     with open(current_run / "params.toml", "rb") as fh:
         metadata = tomllib.load(fh)
@@ -183,8 +208,8 @@ def run_case(config_path: Path) -> tuple[dict, Path, float]:
     )
     if nonoptimal != 0:
         raise RuntimeError(
-            f"Case {rel_config} had {nonoptimal} non-optimal local solves.\n"
-            f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}"
+            f"Case {rel_config} had {nonoptimal} non-optimal local solves. "
+            "Inspect the run's rolling_local_solves.csv for affected updates."
         )
     return metadata, current_run, wall_clock_runtime_s
 
@@ -479,6 +504,18 @@ def main() -> None:
 
     with open(config_path, "rb") as fh:
         base_config = tomllib.load(fh)
+
+    base_strategy = base_config.get("rolling_horizon", {}).get(
+        "soc_strategy",
+        TERMINAL_RESERVE_STRATEGY,
+    )
+    if base_strategy != TERMINAL_RESERVE_STRATEGY:
+        raise ValueError(
+            "This script is only for terminal-reserve rolling-horizon sweeps. "
+            f"Use {DEFAULT_CONFIG} or another config with "
+            f"rolling_horizon.soc_strategy = {TERMINAL_RESERVE_STRATEGY!r}; "
+            f"got {base_strategy!r} from {config_path}."
+        )
 
     output_dir = OUTPUT_DIR
     generated_configs_dir = output_dir / "generated_configs"

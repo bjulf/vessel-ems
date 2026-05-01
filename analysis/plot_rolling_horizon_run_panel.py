@@ -308,11 +308,16 @@ def plot_run(run_dir: Path) -> Path:
     run = params["run"]
     rolling = params.get("rolling_horizon", {})
     forecast_method = rolling.get("forecast_method", "not recorded")
+    min_up_steps = rolling.get("min_up_time_steps", 1)
+    terminal_reserve = rolling.get("soft_band_terminal_reserve_enabled", False)
+    controller_notes = [f"forecast {forecast_method}", f"min-up {min_up_steps} steps"]
+    if terminal_reserve:
+        controller_notes.append(f"terminal reserve {float(rolling.get('terminal_soc_target', 0.0)) * 100:.0f}%")
     fig.suptitle(
         f"{run['label']}\n"
         f"Fuel {kpis['total_fuel_kg']:.1f} kg, starts {int(kpis['generator_starts'])}, "
         f"min SOC {kpis['minimum_soc_pct']:.1f}%, final SOC {kpis['final_soc_pct']:.1f}%, "
-        f"forecast {forecast_method}",
+        f"{', '.join(controller_notes)}",
         fontsize=16,
         fontweight="bold",
     )

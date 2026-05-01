@@ -42,6 +42,12 @@ terminal_soc_target = 0.50
 terminal_slack_penalty_g_per_kwh = 10000.0
 tail_forecast_policy = "repeat_final_load"
 
+[solver]
+rolling_local_time_limit_sec = 30.0
+progress_log_enabled = true
+progress_log_every_steps = 10
+slow_solve_log_threshold_sec = 5.0
+
 [[generators]]
 P_max = 385.0
 P_min = 192.0

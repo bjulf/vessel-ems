@@ -115,6 +115,7 @@ function main()
                     "P"            => collect(Float64, g.P),
                     "SFOC"         => collect(Float64, g.SFOC),
                     "startup_cost" => g.startup_cost,
+                    "shutdown_cost" => g.shutdown_cost,
                 )
                 for g in gensets
             ],

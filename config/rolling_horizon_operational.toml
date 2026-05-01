@@ -7,7 +7,7 @@
 
 [run]
 label = "rolling_horizon_operational"
-description = "Operational 15-minute average-load rolling-horizon MILP benchmark with H=24, first-step implementation, and soft 20-80 percent preferred SOC band"
+description = "Operational 15-minute average-load rolling-horizon MILP benchmark with H=24, moving-average forecast, first-step implementation, and soft 20-80 percent preferred SOC band"
 show_solver_log = false
 entry_point = "main_rolling_horizon.jl"
 benchmark_entry_point = "main_baseline.jl"
@@ -31,21 +31,25 @@ eta_dis = 0.95
 generator_commitment = [0, 0]
 battery_energy_kwh = 564.0
 
-[terminal_conditions]
-battery_energy_min_kwh = 470.0
-
 [rolling_horizon]
 horizon_steps = 24
-forecast_method = "persistence"
+forecast_method = "moving_average"
 moving_average_window_steps = 4
 soc_strategy = "soft_band"
 tail_forecast_policy = "repeat_final_load"
+
+[solver]
+rolling_local_time_limit_sec = 30.0
+progress_log_enabled = true
+progress_log_every_steps = 10
+slow_solve_log_threshold_sec = 5.0
 
 [soft_soc]
 preferred_soc_min = 0.20
 preferred_soc_max = 0.80
 soc_min_penalty_g_per_kwh = 1000.0
 soc_max_penalty_g_per_kwh = 1000.0
+soft_soc_penalty_scaling = "sum"
 
 [[generators]]
 P_max = 385.0

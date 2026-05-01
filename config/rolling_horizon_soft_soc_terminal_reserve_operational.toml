@@ -1,0 +1,66 @@
+# Experimental forecast rolling-horizon controller with mean-normalized soft SOC
+# penalty plus a one-sided soft terminal reserve target inside each local MILP.
+
+[run]
+label = "rolling_horizon_soft_soc_terminal_reserve_operational"
+description = "Operational 15-minute average-load forecast rolling-horizon MILP with mean soft-SOC penalty, H=12, and soft 40 percent local terminal reserve"
+show_solver_log = false
+entry_point = "main_rolling_horizon.jl"
+benchmark_entry_point = "main_baseline.jl"
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+path = "data/operational_profiles/operational_load_profile_15min_avg.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.20
+SOC_max = 0.80
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 564.0
+
+[rolling_horizon]
+horizon_steps = 12
+forecast_method = "moving_average"
+moving_average_window_steps = 4
+soc_strategy = "soft_band"
+tail_forecast_policy = "repeat_final_load"
+min_up_time_steps = 1
+soft_band_terminal_reserve_enabled = true
+terminal_soc_target = 0.40
+terminal_slack_penalty_g_per_kwh = 10000.0
+
+[solver]
+rolling_local_time_limit_sec = 30.0
+progress_log_enabled = true
+progress_log_every_steps = 10
+slow_solve_log_threshold_sec = 5.0
+
+[soft_soc]
+preferred_soc_min = 0.20
+preferred_soc_max = 0.80
+soc_min_penalty_g_per_kwh = 10000.0
+soc_max_penalty_g_per_kwh = 10000.0
+soft_soc_penalty_scaling = "mean"
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0

@@ -130,6 +130,7 @@ function load_model_config(config_path)
             P = Float64.(required_key(g, "P", "[[generators]]")),
             SFOC = Float64.(required_key(g, "SFOC", "[[generators]]")),
             startup_cost = Float64(required_key(g, "startup_cost", "[[generators]]")),
+            shutdown_cost = Float64(get(g, "shutdown_cost", 0.0)),
         )
         for g in generator_cfgs
     ]

@@ -121,6 +121,7 @@ def write_config(config: dict, path: Path) -> None:
                 f"P = {format_toml_array(generator['P'])}",
                 f"SFOC = {format_toml_array(generator['SFOC'])}",
                 f"startup_cost = {format_toml_scalar(generator['startup_cost'])}",
+                f"shutdown_cost = {format_toml_scalar(generator.get('shutdown_cost', 0.0))}",
                 "",
             ]
         )

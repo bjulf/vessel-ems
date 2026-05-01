@@ -1,0 +1,5 @@
+case,forecast_method,run_dir,fuel_kg,fuel_delta_vs_full_pct,generator_starts,minimum_soc_pct,final_soc_pct,local_total_soc_min_slack_kwh,local_total_soc_max_slack_kwh,p95_solve_time_s,power_balance_valid
+Synthetic,Persistence,runs/2026-04-26_143831_rolling_horizon_soft_soc20_synthetic_cstart_1000g_persistence,843.0229081769132,4.356747340579608,8,38.89697648376262,38.89697648376262,0.0,0.0,4.2957958579063416,True
+Synthetic,Moving average MA4,runs/2026-04-26_142830_rolling_horizon_soft_soc20_synthetic_cstart_1000g_ma4,858.3089005148656,6.248981139672257,7,43.4755039193729,46.56174062150056,0.0,0.0,1.5031901597976685,True
+Operational,Persistence,runs/2026-04-26_134239_rolling_horizon_soft_soc20_operational_cstart_1000g,707.3957359851677,5.362298450319993,13,21.48557320828792,36.20044792833148,78.95774331222155,0.0,2.2495913982391356,True
+Operational,Moving average MA4,runs/2026-04-26_143040_rolling_horizon_soft_soc20_operational_cstart_1000g_ma4,735.1103861161913,9.49022726018822,8,29.3705501119821,53.50568169093395,59.595095341366374,0.0,1.343395090103149,True

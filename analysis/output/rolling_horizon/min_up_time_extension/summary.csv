@@ -1,0 +1,5 @@
+min_up_time_steps,min_up_time_hours,rolling_fuel_kg,fuel_delta_vs_full_pct,rolling_starts,minimum_soc_pct,final_soc_pct,run_count,run_lengths_steps,minimum_length_runs,shorter_than_1h_runs,shorter_than_1p5h_runs,run_dir
+3,0.75,705.0956514560203,5.019714829451129,8,20.03101623741184,36.54137020577076,8,18 3 12 10 5 3 3 17,3,3,4,C:\Users\bulve\OneDrive\master\model\runs\2026-04-28_152239_rolling_horizon_soft_soc_min_up_operational
+4,1.0,698.3518198406367,4.015262069541292,8,20.09012737963386,32.25321038633843,8,18 4 11 10 5 4 4 17,3,0,4,C:\Users\bulve\OneDrive\master\model\runs\2026-04-28_162631_rolling_horizon_soft_soc_min_up4_operational
+6,1.5,700.96839777424,4.404985460755816,6,20.290103583437702,33.52591615341537,6,17 13 10 6 6 19,2,0,0,C:\Users\bulve\OneDrive\master\model\runs\2026-04-28_162657_rolling_horizon_soft_soc_min_up6_operational
+8,2.0,725.3622480634785,8.03830130333401,6,20.666013437872945,45.2737153555421,6,18 16 9 8 8 17,2,0,0,C:\Users\bulve\OneDrive\master\model\runs\2026-04-28_162630_rolling_horizon_soft_soc_min_up8_operational

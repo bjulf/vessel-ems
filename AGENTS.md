@@ -164,4 +164,5 @@ Use the smallest relevant validation for the change:
 
 - Preserve the user's existing run outputs and scenario comparison files.
 - Surface model-logic tradeoffs clearly when changing constraints or objective terms.
+- When a thread appears to make or confirm an important thesis/modeling decision, ask whether it should be added to `analysis/handoffs/thesis_decision_notes.md`.
 - If a requested change affects both preprocessing cadence and optimization timestep semantics, treat it as a cross-file change and verify both sides.

@@ -1,0 +1,63 @@
+[run]
+label = "rolling_horizon_balanced_3day_h16_ma4_c500_p10k_minup12"
+description = "3-day minimum-up-time sensitivity from frozen balanced controller: H16, MA4, startup 500 g/start, mean soft-SOC penalty 10000 g/kWh, 12-step minimum up-time, no terminal reserve; only min_up_time_steps changed."
+show_solver_log = false
+entry_point = "main_rolling_horizon.jl"
+benchmark_entry_point = "main_baseline.jl"
+
+[scheduling]
+dt_minutes = 15
+
+[load_profile]
+path = "data/operational_profiles/operational_load_profile_15min_avg.csv"
+
+[battery]
+E_max = 940.0
+SOC_min = 0.2
+SOC_max = 0.8
+P_ch_max = 753.0
+P_dis_max = 943.0
+eta_ch = 0.95
+eta_dis = 0.95
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 564.0
+
+[rolling_horizon]
+horizon_steps = 16
+forecast_method = "moving_average"
+moving_average_window_steps = 4
+soc_strategy = "soft_band"
+tail_forecast_policy = "repeat_final_load"
+min_up_time_steps = 12
+soft_band_terminal_reserve_enabled = false
+
+[solver]
+rolling_local_time_limit_sec = 30.0
+progress_log_enabled = false
+progress_log_every_steps = 25
+slow_solve_log_threshold_sec = 999.0
+
+[soft_soc]
+preferred_soc_min = 0.2
+preferred_soc_max = 0.8
+soc_min_penalty_g_per_kwh = 10000.0
+soc_max_penalty_g_per_kwh = 10000.0
+soft_soc_penalty_scaling = "mean"
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0
+shutdown_cost = 0.0
+
+[[generators]]
+P_max = 385.0
+P_min = 192.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0
+shutdown_cost = 0.0
