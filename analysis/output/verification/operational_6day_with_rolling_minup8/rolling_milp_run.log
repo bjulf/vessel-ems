@@ -1,0 +1,21 @@
+Solving full-horizon benchmark for 534 timesteps...
+Full-horizon benchmark status = OPTIMAL, solve time = 661.103 s
+Solving rolling horizon: strategy=soft_band, forecast=moving_average, local time limit=30.0 s, progress every 25 steps
+Rolling-horizon run saved to -> C:\Users\bulve\OneDrive\master\model\runs\2026-05-04_144202_rolling_horizon_balanced_6day_h16_ma4_c500_p10k_minup8_harmonized
+SOC strategy       = soft_band
+Rolling fuel       = 1618.726 kg
+Benchmark fuel     = 1591.750 kg
+Fuel delta         = 26.976 kg (1.69 %)
+Min up time       = 8 steps
+Rolling starts     = 14
+Benchmark starts   = 12
+Rolling min SOC    = 20.87 %
+Rolling final SOC  = 27.04 %
+Realized low slack = 0.000 kWh
+Realized high slack= 0.000 kWh
+Local low slack    = 1135.005 kWh
+Local high slack   = -0.000 kWh
+Median solve time  = 0.0741 s
+P95 solve time     = 1.1237 s
+Max solve time     = 2.5328 s
+Non-opt/timeout/infeasible local solves = 0

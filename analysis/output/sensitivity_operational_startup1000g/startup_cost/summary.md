@@ -1,0 +1,16 @@
+# Startup-Cost Sensitivity Summary
+
+Config: `config/operational_model_soc60_no_terminal_startup1000g_sensitivity.toml`
+Cases run: 8
+Baseline case at 1000 g/start: 671.394 kg fuel, 4 starts, terminal SOC 20.00%.
+
+| Startup Cost [g/start] | Config | Run Dir | Objective | Fuel [kg] | Starts | Stops | Min SOC [%] | Terminal SOC [%] | Throughput [kWh] | Solve [s] | Wall [s] | Warnings |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 350 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_350g.toml` | `runs/2026-05-04_135921_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_350g` | 672787.1 | 671 | 5 | 5 | 20.7 | 20 | 2045.4 | 2.526 | 62.99 | ends 30.0 pp below the old terminal reserve |
+| 500 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_500g.toml` | `runs/2026-05-04_135948_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_500g` | 673393.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 3.322 | 26.86 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 550 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_550g.toml` | `runs/2026-05-04_140015_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_550g` | 673593.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 3.566 | 27.08 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 600 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_600g.toml` | `runs/2026-05-04_140042_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_600g` | 673793.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 2.646 | 27.35 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 650 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_650g.toml` | `runs/2026-05-04_140111_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_650g` | 673993.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 2.765 | 28.39 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 700 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_700g.toml` | `runs/2026-05-04_140138_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_700g` | 674193.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 3.417 | 26.71 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 1000 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_1000g.toml` | `runs/2026-05-04_140203_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_1000g` | 675393.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 2.705 | 25.87 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |
+| 1500 | `analysis/output/sensitivity_operational_startup1000g/startup_cost/generated_configs/startup_cost_1500g.toml` | `runs/2026-05-04_140231_operational_model_soc60_no_terminal_cstart_1000g_sensitivity_cstart_1500g` | 677393.6 | 671.4 | 4 | 4 | 20 | 20 | 1962.4 | 4.308 | 27.36 | ends 30.0 pp below the old terminal reserve; hits the configured minimum SOC |

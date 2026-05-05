@@ -13,6 +13,10 @@ This folder is a packaging area for thesis-facing material copied from the worki
 - `operational_load_validation.png`
   Curated methods figure for operational load validation.
 
+- `operational_comparison_load_profile_15min_clean.pdf`
+  Curated methods figure for the final 15-minute 3-day operational comparison load profile.
+  See `operational_comparison_load_profile_15min_clean.md` for source and generation notes.
+
 - `sfoc_regime_thesis_scatter.png`
   Curated results figure for telemetry-based SFOC/regime assessment.
 

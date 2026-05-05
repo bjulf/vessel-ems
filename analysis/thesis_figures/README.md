@@ -11,6 +11,7 @@ A packaged snapshot for report assembly is also available under [Thesis_ready/](
 ### Methods
 
 - [methods/operational_load_validation.png](./methods/operational_load_validation.png)
+- [methods/operational_comparison_load_profile_15min.png](./methods/operational_comparison_load_profile_15min.png)
 - [methods/validation_profile_bars.png](./methods/validation_profile_bars.png)
 
 Supporting note:
@@ -20,6 +21,7 @@ Supporting note:
 Intended use:
 
 - general operational data validation or operational load validation in the Methods chapter
+- case-definition figure for the final 15-minute operational comparison load profile used as controller input
 - synthetic validation-case design figure showing the staged 24 h load profile used for internal verification
 
 ### Results
@@ -27,15 +29,27 @@ Intended use:
 - [results/sfoc_regime_thesis_scatter.png](./results/sfoc_regime_thesis_scatter.png)
 - [results/sensitivity_analysis_other_main_sensitivities.png](./results/sensitivity_analysis_other_main_sensitivities.png)
 - [results/sensitivity_analysis_startup_cost_main.png](./results/sensitivity_analysis_startup_cost_main.png)
+- [results/operational_dispatch_comparison_no_terminal_startup1000g.png](./results/operational_dispatch_comparison_no_terminal_startup1000g.png)
+- [results/operational_dispatch_comparison_with_rolling_minup6.pdf](./results/operational_dispatch_comparison_with_rolling_minup6.pdf)
+- [results/operational_dispatch_comparison_with_rolling_minup8.pdf](./results/operational_dispatch_comparison_with_rolling_minup8.pdf)
+- [results/operational_dispatch_comparison_6day_with_rolling_minup8.pdf](./results/operational_dispatch_comparison_6day_with_rolling_minup8.pdf)
+- [results/operational_dispatch_comparison_6day_with_rolling_minup8.png](./results/operational_dispatch_comparison_6day_with_rolling_minup8.png)
 - [results/synthetic_oem_points_by_module_cstart700.png](./results/synthetic_oem_points_by_module_cstart700.png)
 - [results/synthetic_verification_overview_soc70.png](./results/synthetic_verification_overview_soc70.png)
 - [results/synthetic_verification_overview_cstart700.png](./results/synthetic_verification_overview_cstart700.png)
+
+Supporting note:
+
+- [results/operational_dispatch_comparison_no_terminal_startup1000g.md](./results/operational_dispatch_comparison_no_terminal_startup1000g.md)
 
 Intended use:
 
 - Results subsection for telemetry-based assessment of generator operating regimes and SFOC behavior
 - Results subsection for main sensitivity-analysis comparisons across non-startup parameters
 - Results subsection for startup-cost sensitivity behavior in the synthetic validation case
+- Results subsection comparing offline MILP and rule-based dispatch on the 3-day operational case
+- Results subsection comparing offline MILP, rule-based dispatch, and 3-day rolling-horizon MILP for `min_up=6` and `min_up=8`; source PDFs copied from the corresponding run-local `plots/` folders
+- Results subsection comparing offline MILP, rule-based dispatch, and rolling-horizon MILP on the harmonized 6-day operational case with `min_up=8`
 - Results subsection or discussion figure for where the synthetic `700 g/start` dispatch occupies the modeled OEM SFOC curve, colored by synthetic operating module
 - Results subsection for synthetic-case verification of dispatch behavior with 70% initial SOC
 - Results subsection or sensitivity appendix figure for the synthetic validation case with `700 g/start` startup penalty

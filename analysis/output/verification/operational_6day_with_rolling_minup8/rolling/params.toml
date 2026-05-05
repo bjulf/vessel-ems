@@ -1,0 +1,214 @@
+[terminal_conditions]
+rolling_local_soft_soc_band_enforced = true
+battery_energy_min_kwh_reference = 564.0
+rolling_local_terminal_constraint_enforced = false
+full_horizon_constraint_enforced = false
+
+[[generators]]
+P_max = 385.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0
+shutdown_cost = 0.0
+P_min = 192.0
+[[generators]]
+P_max = 385.0
+P = [192.0, 288.0, 310.0, 385.0]
+SFOC = [193.0, 191.0, 191.0, 198.0]
+startup_cost = 500.0
+shutdown_cost = 0.0
+P_min = 192.0
+
+[solver]
+rolling_local_solves = 534
+benchmark_objective = 1.5977499987257603e6
+benchmark_solve_time_s = 661.1027462482452
+benchmark_status = "OPTIMAL"
+
+[validation.full_horizon_benchmark.power_balance]
+max_residual_timestep = 32
+max_abs_residual_kw = 2.842170943040401e-14
+max_residual_datetime = "2026-01-26 08:45"
+max_residual_kw = -2.842170943040401e-14
+within_primal_feasibility_tolerance = true
+
+[validation.full_horizon_benchmark.battery_energy]
+max_dynamic_residual_from_datetime = "2026-01-31 02:00"
+initial_residual_kwh = 0.0
+terminal_target_min_kwh = 564.0
+terminal_energy_kwh = 188.0
+terminal_soc_pct = 20.0
+terminal_target_min_soc_pct = 60.0
+terminal_constraint_residual_kwh = -376.0
+max_dynamic_residual_kwh = 1.1368683772161603e-13
+within_primal_feasibility_tolerance = true
+max_dynamic_residual_from_timestep = 485
+max_abs_dynamic_residual_kwh = 1.1368683772161603e-13
+max_dynamic_residual_to_timestep = 486
+
+[validation.full_horizon_benchmark.solver_tolerances]
+mip_feasibility = 1.0e-6
+primal_feasibility = 1.0e-7
+energy_residual_tolerance_kwh = 1.0e-7
+
+[validation.rolling_horizon.power_balance]
+max_residual_timestep = 315
+max_abs_residual_kw = 1.5631940186722204e-13
+max_residual_datetime = "2026-01-29 07:30"
+max_residual_kw = -1.5631940186722204e-13
+within_primal_feasibility_tolerance = true
+
+[validation.rolling_horizon.battery_energy]
+max_dynamic_residual_from_datetime = "2026-01-26 01:00"
+initial_residual_kwh = 0.0
+terminal_target_min_kwh = 564.0
+terminal_energy_kwh = 254.20510526316573
+terminal_soc_pct = 27.0430963045921
+terminal_target_min_soc_pct = 60.0
+terminal_constraint_residual_kwh = -309.7948947368343
+max_dynamic_residual_kwh = 0.0
+within_primal_feasibility_tolerance = true
+max_dynamic_residual_from_timestep = 1
+max_abs_dynamic_residual_kwh = 0.0
+max_dynamic_residual_to_timestep = 2
+
+[validation.rolling_horizon.solver_tolerances]
+mip_feasibility = 1.0e-6
+primal_feasibility = 1.0e-7
+energy_residual_tolerance_kwh = 1.0e-7
+
+[battery]
+E_init = 564.0
+eta_ch = 0.95
+P_dis_max = 943.0
+SOC_terminal_min = 0.6
+eta_dis = 0.95
+dt = 0.25
+E_min = 188.0
+E_max = 752.0
+E_cap = 940.0
+P_ch_max = 753.0
+SOC_min = 0.2
+E_terminal_min = 564.0
+SOC_max = 0.8
+
+[rolling_horizon]
+update_index = "r"
+uses_full_horizon_soc_reference = false
+soft_soc_penalty_scaling = "mean"
+soft_soc_penalty_objective = "c_SOC^- * (1 / (H + 1)) * sum(s_e^-) + c_SOC^+ * (1 / (H + 1)) * sum(s_e^+)"
+terminal_slack_penalty_g_per_kwh = 0.0
+horizon_steps = 16
+tail_forecast_total_padded_steps = 0
+terminal_soc_target = 0.0
+soc_strategy = "soft_band"
+local_load_definition = "P_hat_L(r,1) = P_L[r]; P_hat_L(r,j) = mean(P_L[(r-N_r+1):r]) for j=2,...,H, N_r=min(moving_average_window_steps,r)"
+local_soc_interpretation = "preferred SOC operating band with soft violations over each local horizon"
+full_horizon_solution_role = "offline lower-bound objective benchmark only"
+progress_log_enabled = false
+progress_log_every_steps = 25
+terminal_energy_target_kwh = 0.0
+slow_solve_log_threshold_sec = 999.0
+forecast_method = "moving_average"
+terminal_constraint = "not enabled"
+tail_forecast_policy = "repeat_final_load"
+uses_realized_future_load_inside_local_horizon = false
+tail_forecast_padded_solves = 0
+min_up_time_steps = 8
+local_solve_time_limit_sec = 30.0
+full_horizon_soc_tracking = "not used as a hard constraint, soft target, reference, or penalty target"
+terminal_reserve_constraint_enabled = false
+implemented_steps_per_update = 1
+soft_band_terminal_reserve_enabled = false
+dt_h = 0.25
+moving_average_window_steps = 4
+
+[run]
+label = "rolling_horizon_balanced_6day_h16_ma4_c500_p10k_minup8_harmonized"
+git_hash = "4b2a8901ba69641512d10af5d791d300b02852ab"
+model_file = "model.jl"
+git_dirty = true
+controller = "rolling_horizon"
+config_file = "C:\\Users\\bulve\\OneDrive\\master\\model\\analysis\\output\\verification\\operational_6day_with_rolling_minup8\\generated_configs\\rolling_horizon_balanced_6day_h16_ma4_c500_p10k_minup8_harmonized.toml"
+date = "2026-05-04"
+entry_point = "main_rolling_horizon.jl"
+description = "Harmonized 6-day minimum-up-time comparison from frozen balanced controller: H16, MA4, startup 500 g/start, mean soft-SOC penalty 10000 g/kWh, 8-step minimum up-time, no terminal reserve."
+
+[soft_soc]
+soft_soc_penalty_scaling = "mean"
+terminal_slack_penalty_g_per_kwh = 0.0
+preferred_soc_min = 0.2
+terminal_soc_target = 0.0
+preferred_energy_max_kwh = 752.0
+preferred_energy_min_kwh = 188.0
+soc_min_penalty_g_per_kwh = 10000.0
+terminal_energy_target_kwh = 0.0
+min_up_time_steps = 8
+preferred_soc_max = 0.8
+physical_energy_lower_kwh = 0.0
+soft_band_terminal_reserve_enabled = false
+physical_energy_upper_kwh = 940.0
+interpretation = "Preferred rolling-horizon operating band with average soft violations over local energy states; not a terminal reserve constraint."
+soc_max_penalty_g_per_kwh = 10000.0
+
+[load_profile]
+end_datetime = "2026-01-31 14:15"
+timesteps = 534
+source_file = "C:\\Users\\bulve\\OneDrive\\master\\model\\data\\operational_profiles\\operational_load_profile_6day_15min_avg.csv"
+start_datetime = "2026-01-26 01:00"
+dt_minutes = 15
+
+[kpis.full_horizon_benchmark]
+final_soc_pct = 20.0
+realized_total_soc_min_slack_kwh = 0.0
+realized_maximum_soc_min_slack_kwh = 0.0
+local_total_soc_max_slack_kwh = 0.0
+local_maximum_soc_max_slack_kwh = 0.0
+realized_soc_min_violation_states = 0
+realized_maximum_soc_max_slack_kwh = 0.0
+local_maximum_soc_min_slack_kwh = 0.0
+local_total_soc_min_slack_kwh = 0.0
+nonoptimal_timeout_or_infeasible_solves = 0
+realized_soc_max_violation_states = 0
+minimum_soc_pct = 20.0
+maximum_soc_pct = 80.0
+p95_solve_time_s = 661.1027462482452
+total_fuel_kg = 1591.7499987257602
+median_solve_time_s = 661.1027462482452
+generator_starts = 12
+maximum_solve_time_s = 661.1027462482452
+realized_total_soc_max_slack_kwh = 0.0
+total_fuel_g = 1.5917499987257603e6
+
+[kpis.comparison]
+fuel_delta_pct = 1.6947243442245086
+final_soc_delta_pct_points = 7.043096304592101
+minimum_soc_delta_pct_points = 0.8715005599104266
+generator_starts_delta = 2
+fuel_delta_g = 26975.774727598764
+
+[kpis.rolling_horizon]
+final_soc_pct = 27.0430963045921
+realized_total_soc_min_slack_kwh = 0.0
+realized_maximum_soc_min_slack_kwh = 0.0
+local_total_soc_max_slack_kwh = -2.223628922436572e-12
+local_maximum_soc_max_slack_kwh = 0.0
+realized_soc_min_violation_states = 0
+realized_maximum_soc_max_slack_kwh = 0.0
+local_maximum_soc_min_slack_kwh = 28.972460492091784
+local_total_soc_min_slack_kwh = 1135.0047366562555
+nonoptimal_timeout_or_infeasible_solves = 0
+realized_soc_max_violation_states = 0
+minimum_soc_pct = 20.871500559910427
+maximum_soc_pct = 69.35883468647262
+p95_solve_time_s = 1.123676753044128
+total_fuel_kg = 1618.7257734533591
+median_solve_time_s = 0.07411074638366699
+generator_starts = 14
+maximum_solve_time_s = 2.532763957977295
+realized_total_soc_max_slack_kwh = 0.0
+total_fuel_g = 1.618725773453359e6
+
+[initial_conditions]
+generator_commitment = [0, 0]
+battery_energy_kwh = 564.0
