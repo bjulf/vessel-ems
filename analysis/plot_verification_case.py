@@ -347,7 +347,7 @@ def plot_residual_panel(ax: plt.Axes, subset: pd.DataFrame) -> None:
     ax.legend(loc="upper left", fontsize=BASE_FONT)
 
 
-def get_oem_curve(params: dict) -> pd.DataFrame:
+def get_oem_breakpoints(params: dict) -> pd.DataFrame:
     generators = params.get("generators", [])
     if not generators:
         raise ValueError("No generator data found in params.toml")
@@ -359,8 +359,37 @@ def get_oem_curve(params: dict) -> pd.DataFrame:
         }
     )
     p_max = float(generators[0]["P_max"])
+    curve["fuel_gph"] = curve["P_kw"] * curve["sfoc_gkwh"]
     curve["load_pct"] = curve["P_kw"] / p_max * 100.0
     return curve
+
+
+def get_oem_curve(params: dict, points_per_segment: int = 80) -> pd.DataFrame:
+    breakpoints = get_oem_breakpoints(params)
+    rows: list[dict[str, float]] = []
+    p_max = float(params["generators"][0]["P_max"])
+
+    # The MILP interpolates generator fuel rate, not SFOC directly. The implied
+    # SFOC between breakpoints is therefore fuel_rate(P) / P.
+    for idx in range(len(breakpoints) - 1):
+        left = breakpoints.iloc[idx]
+        right = breakpoints.iloc[idx + 1]
+        for point_idx in range(points_per_segment + 1):
+            if idx > 0 and point_idx == 0:
+                continue
+            alpha = point_idx / points_per_segment
+            power = left["P_kw"] + alpha * (right["P_kw"] - left["P_kw"])
+            fuel_rate = left["fuel_gph"] + alpha * (right["fuel_gph"] - left["fuel_gph"])
+            rows.append(
+                {
+                    "P_kw": power,
+                    "sfoc_gkwh": fuel_rate / power,
+                    "fuel_gph": fuel_rate,
+                    "load_pct": power / p_max * 100.0,
+                }
+            )
+
+    return pd.DataFrame(rows)
 
 
 def active_generator_points(dispatch: pd.DataFrame) -> pd.DataFrame:
@@ -406,20 +435,29 @@ def dispatch_method_text(params: dict) -> str:
 
 def draw_oem_curve(ax: plt.Axes, params: dict, annotate_breakpoints: bool = True) -> pd.DataFrame:
     curve = get_oem_curve(params)
+    breakpoints = get_oem_breakpoints(params)
 
     ax.plot(
         curve["P_kw"],
         curve["sfoc_gkwh"],
         color="#111827",
         linewidth=2.4,
-        marker="o",
-        markersize=5,
-        label="Modeled OEM curve",
+        label="Modeled fuel-rate curve",
         zorder=2,
+    )
+    ax.scatter(
+        breakpoints["P_kw"],
+        breakpoints["sfoc_gkwh"],
+        s=32,
+        color="#111827",
+        edgecolor="white",
+        linewidth=0.5,
+        zorder=4,
+        label="OEM breakpoints",
     )
 
     if annotate_breakpoints:
-        for _, row in curve.iterrows():
+        for _, row in breakpoints.iterrows():
             x_offset = 0
             y_offset = 10
             ha = "center"
@@ -439,8 +477,10 @@ def draw_oem_curve(ax: plt.Axes, params: dict, annotate_breakpoints: bool = True
                 color="#475569",
             )
 
-    ax.set_xlim(curve["P_kw"].min() - 8, curve["P_kw"].max() + 8)
-    ax.set_ylim(curve["sfoc_gkwh"].min() - 3.5, curve["sfoc_gkwh"].max() + 4.5)
+    sfoc_min = min(curve["sfoc_gkwh"].min(), breakpoints["sfoc_gkwh"].min())
+    sfoc_max = max(curve["sfoc_gkwh"].max(), breakpoints["sfoc_gkwh"].max())
+    ax.set_xlim(breakpoints["P_kw"].min() - 8, breakpoints["P_kw"].max() + 8)
+    ax.set_ylim(sfoc_min - 3.5, sfoc_max + 4.5)
     ax.set_xlabel("Generator power [kW]", fontsize=BASE_FONT + 2)
     ax.set_ylabel("SFOC [g/kWh]", fontsize=BASE_FONT + 2)
     ax.grid(alpha=0.25)
@@ -469,7 +509,7 @@ def add_curve_note(ax: plt.Axes, dispatch: pd.DataFrame, params: dict) -> None:
     ax.text(
         0.02,
         0.04,
-        f"Points show dispatched {dispatch_method_text(params)} states on the piecewise OEM curve",
+        f"Points show dispatched {dispatch_method_text(params)} states on the piecewise fuel-rate curve",
         transform=ax.transAxes,
         ha="left",
         va="bottom",
